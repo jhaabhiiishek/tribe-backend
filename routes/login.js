@@ -1,0 +1,107 @@
+const post = require('../modules/post')
+const express = require('express')
+const app = express()
+const bcrypt = require('bcrypt');
+const passport = require('passport')
+const authenticate = require('../auth/authentication')
+const login_creds = require('../modules/login_creds')
+const LocalStrategy = require('passport-local').Strategy;
+const jwt = require("jsonwebtoken");
+
+app.post('/login',
+	async function(req, res) {
+		try{
+			const {
+				user_id,
+				password
+			} = req.body
+
+			if(!password || (!(user_id))){
+				return res.status(203).json({
+					success:0,
+					msg:"Userid and Password are required "
+				})
+			}
+
+			function isNumeric(value) {
+				return /^-?\d+$/.test(value);
+			}
+
+			if(isNumeric(user_id)){
+				var studentPhone = await login_creds.findOne({
+					phone:user_id
+				})
+			}
+			var student = await login_creds.findOne({
+				email:user_id
+			})
+			const user = await login_creds.findOne({
+				user_id:user_id
+			})
+
+			var result = null;
+			if(studentPhone!=null){
+				result = studentPhone
+			}
+			if(student!=null){
+				result = student
+			}
+			if(user!=null){
+				result = user
+			}
+
+			if(result == null){
+				return res.status(203).json({
+					success: 0,
+					msg: "User is not registered"
+				});
+			}
+			
+			var isUser = false;
+
+			if(result&&password){
+				const pass = result.password;
+				isUser = bcrypt.compareSync(password,pass);
+				if(!isUser){
+					return res.status(203).json({
+						success: 0,
+						msg: "Wrong password entered"
+					});
+				}
+			}
+			
+			if(isUser){
+				var student_token = jwt.sign({
+					"user_id":result.user_id,
+					"phone":result.phone,
+					"email":result.email
+				},
+				process.env.TOKEN_KEY, {
+					expiresIn: "7d",
+				});
+				let student = {
+					token: student_token
+				}
+				res.cookie("student", student, {
+					httpOnly: false
+				});
+				return res.status(200).json({
+					success: 1,
+					msg: "Logged in successfully"
+				});
+			}
+			return res.status(500).json({
+				success: 0,
+				msg: "Invalid creds"
+			});
+		}catch(err){
+			console.log(err);
+			return res.status(203).json({
+				success: 0,
+				msg: err
+			});
+		}
+	}
+);
+
+module.exports= app
