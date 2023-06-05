@@ -110,7 +110,8 @@ app.post('/fetch_tribe_invites',authenticate, async function(req, res, next) {
 		}
 	}catch(err){
 		return res.status(203).json({
-			status:'failed',
+			success:0,
+			msg:'failed',
 			data:err
 		})
 	}
