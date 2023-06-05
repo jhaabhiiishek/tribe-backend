@@ -18,7 +18,6 @@ app.post('/fetch_user_post',authenticate, async(req,res) => {
 	}
 
 	let l = student_link.links.length;
-	console.log(l)
 	var post_response = []
 
 	try{
@@ -26,11 +25,11 @@ app.post('/fetch_user_post',authenticate, async(req,res) => {
 			let item = await post.find({
 				user_id:student_link.links[i],
 				is_tribe:false,
-				upload_date: {$gte: new Date((new Date().getTime() - (3 * 24 * 60 * 60 * 1000)))}
+				// upload_date: {$gte: new Date((new Date().getTime() - (3 * 24 * 60 * 60 * 1000)))}
 			})
-			console.log(item)
-			post_response.concat(item)
+			post_response.push(item)
 		}
+		console.log(post_response)
         res.status(201).json({
             success:1,
             data : post_response
