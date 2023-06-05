@@ -25,7 +25,8 @@ app.post('/signup', async function(req, res, next) {
 	const { phone,email,user_id, password } = req.body;
 
 	if(!(phone||email) || !(password) ||!user_id){
-		return res.status(500).json({
+		return res.status(203).json({
+			success:0,
 			msg:"Enter all the required fields"
 		})
 	}
@@ -37,7 +38,8 @@ app.post('/signup', async function(req, res, next) {
 	console.log(searchuid[0])
 
 	if(searchuid[0]!=undefined&&(searchuid[0].user_id!=null||searchuid[0].user_id!=undefined)){
-		return res.status(500).json({
+		return res.status(203).json({
+			success:0,
 			msg:"Student exists with given user_id"
 		})
 	}
@@ -47,7 +49,8 @@ app.post('/signup', async function(req, res, next) {
 	})
 	
 	if(searchemail[0]!=undefined&&(searchemail[0].user_id!=null||searchemail[0].user_id!=undefined)){
-		return res.status(500).json({
+		return res.status(203).json({
+			success:0,
 			msg:"Student exists with given email"
 		})
 	}
@@ -58,7 +61,8 @@ app.post('/signup', async function(req, res, next) {
 		})
 		
 		if(searchphone[0]!=undefined&&(searchphone[0].user_id!=null||searchphone[0].user_id!=undefined)){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Student exists with given phone"
 			})
 		}
@@ -69,12 +73,14 @@ app.post('/signup', async function(req, res, next) {
 	})
 	
 	if(checkOtp==undefined||checkOtp==null){
-		return res.status(404).json({
+		return res.status(203).json({
+			success:0,
 			msg:"Your email isnt verified"
 		})
 	}
 	if((checkOtp!=undefined||checkOtp!=null)&&checkOtp.verified==false){
-		return res.status(404).json({
+		return res.status(203).json({
+			success:0,
 			msg:"Kindly get your email Verified"
 		})
 	}
@@ -91,7 +97,7 @@ app.post('/signup', async function(req, res, next) {
 		console.log(result,"is res")
 		if(result){
 			return res.status(201).json({
-				status: 'Success',
+				success: 1,
 				msg:"now to student details",
 				data : {
 					"user_id": user_id,

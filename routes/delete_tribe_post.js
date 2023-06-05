@@ -39,12 +39,14 @@ app.post('/delete_tribe_post',authenticate, async function(req, res, next) {
 
 	
 		if(!(user_id&&posted_by&&user_post_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
 		if(posted_by!=user_id){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"You can only delete your posts"
 			})
 		}
@@ -55,17 +57,19 @@ app.post('/delete_tribe_post',authenticate, async function(req, res, next) {
 			is_tribe:true
 		})
 		if(!posts_so_far){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"No such tribe post existed, is it a personal post?"
 			})
 		}else{
-			return res.status(204).json({
+			return res.status(201).json({
+				success:1,
 				msg:"Deleted!"
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
 			data:'err'
 		})
 	}

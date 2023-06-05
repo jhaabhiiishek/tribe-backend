@@ -6,7 +6,7 @@ const passport = require('passport')
 app.get('/logout', function(req, res) {
 	try {
         res.clearCookie("student");
-        return res.status(200).json({
+        return res.status(201).json({
             success: 1,
             msg: "Logged out successfully",
         });

@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const post = require('../modules/post')
 const express = require('express')
 const app = express()
@@ -6,7 +7,6 @@ const passport = require('passport')
 const authenticate = require('../auth/authentication')
 const login_creds = require('../modules/login_creds')
 const LocalStrategy = require('passport-local').Strategy;
-const jwt = require("jsonwebtoken");
 
 app.post('/login',
 	async function(req, res) {
@@ -33,10 +33,10 @@ app.post('/login',
 				})
 			}
 			var student = await login_creds.findOne({
-				email:user_id
+				email:user_id.toLowerCase()
 			})
 			const user = await login_creds.findOne({
-				user_id:user_id
+				user_id:user_id.toLowerCase()
 			})
 
 			var result = null;
@@ -71,6 +71,7 @@ app.post('/login',
 			}
 			
 			if(isUser){
+			
 				var student_token = jwt.sign({
 					"user_id":result.user_id,
 					"phone":result.phone,
@@ -82,9 +83,11 @@ app.post('/login',
 				let student = {
 					token: student_token
 				}
-				res.cookie("student", student, {
-					httpOnly: false
+				console.log("1")
+				res.cookie("student", student_token, {
+					maxAge: 7 * 24 * 60 * 60 * 1000
 				});
+				console.log("2")
 				return res.status(200).json({
 					success: 1,
 					msg: "Logged in successfully"

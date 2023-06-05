@@ -38,9 +38,9 @@ app.post('/upvote',authenticate, async function(req, res, next) {
 			user_post_id
 		} = req.body;
 	
-		console.log("inside upvote")
 		if(!(user_id&&posted_by&&user_post_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -56,8 +56,9 @@ app.post('/upvote',authenticate, async function(req, res, next) {
 			val = posts_so_far.upvotes
 		}
 		if(posts_so_far==null||posts_so_far==undefined){
-			return res.status(500).json({
-				status:' no comment exists',
+			return res.status(203).json({
+				success: 1,
+				msg:' no comment exists',
 				data: posts_so_far
 			})
 		}
@@ -91,19 +92,22 @@ app.post('/upvote',authenticate, async function(req, res, next) {
 
 	
 		if(searchpost==undefined||searchpost==null){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"No such post exists"
 			})
 		}else{
 			return res.status(201).json({
+				success:1,
 				msg:"Upvoted!",
 				likes: num
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
-			data:'err'
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
+			data:err
 		})
 	}
 });
@@ -118,7 +122,8 @@ app.post('/getupvotedby',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id)){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -129,7 +134,8 @@ app.post('/getupvotedby',authenticate, async function(req, res, next) {
 		})
 
 		if((poster==null||poster==undefined)&&(poster.upvoted_by==null||poster.upvoted_by==undefined)){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Can't get post"
 			})
 		}
@@ -137,14 +143,16 @@ app.post('/getupvotedby',authenticate, async function(req, res, next) {
 			let final_data =[]
 			final_data= poster.upvoted_by 
 			return res.status(201).json({
+				success:1,
 				msg:"successful",
 				data:final_data
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
-			data:'err'
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
+			data:err
 		})
 	}
 });
@@ -160,7 +168,8 @@ app.post('/comment',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&post_by_user_id&&user_post_id&&text)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -188,18 +197,21 @@ app.post('/comment',authenticate, async function(req, res, next) {
 
 		if(comments){
 			return res.status(201).json({
-				status:'commented successfully',
+				success:1,
+				msg:'commented successfully',
 				data: comments
 			})
 		}else{
-			return res.status(500).json({
-				status:'Can not comment',
+			return res.status(203).json({
+				success:0,
+				msg:'Can not comment',
 				data: link_req
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
 			data:err
 		})
 	}
@@ -214,7 +226,8 @@ app.post('/likepostcomment',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -228,8 +241,9 @@ app.post('/likepostcomment',authenticate, async function(req, res, next) {
 			val = posts_so_far.upvotes
 		}
 		if(posts_so_far==null||posts_so_far==undefined){
-			return res.status(500).json({
-				status:' no comment exists',
+			return res.status(203).json({
+				success:0,
+				msg:' no comment exists',
 				data: posts_so_far
 			})
 		}
@@ -243,18 +257,19 @@ app.post('/likepostcomment',authenticate, async function(req, res, next) {
 
 		if(like_comment){
 			return res.status(201).json({
-				status:'commented successfully',
+				success:1,
+				msg:'commented successfully',
 				data: like_comment
 			})
 		}else{
-			return res.status(500).json({
-				status:'Can not comment',
+			return res.status(203).json({
+				msg:'Can not comment',
 				data: like_comment
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			msg:'failed',
 			data:'err'
 		})
 	}
@@ -271,7 +286,8 @@ app.post('/fetchpostcomment',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&post_by_user_id&&user_post_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -298,20 +314,16 @@ app.post('/fetchpostcomment',authenticate, async function(req, res, next) {
 
 		if(comments){
 			return res.status(201).json({
-				status:'fetched successfully',
+				success:1,
+				msg:'fetched successfully',
 				data: response_items
 			})
 		}else{
-			return res.status(500).json({
-				status:'Can not find comments',
+			return res.status(203).json({
+				success:0,
+				msg:'Can not find comments',
 			})
 		}
-	// }catch(err){
-	// 	return res.status(500).json({
-	// 		status:'failed',
-	// 		data:'err'
-	// 	})
-	// }
 });
 
 app.post('/deletepostcomment',authenticate, async function(req, res, next) {
@@ -322,7 +334,8 @@ app.post('/deletepostcomment',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -334,7 +347,8 @@ app.post('/deletepostcomment',authenticate, async function(req, res, next) {
 			_id:_id
 		})
 		if(this_comment==null||this_comment==undefined){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Comment was not made by this user",
 			})
 		}
@@ -354,16 +368,19 @@ app.post('/deletepostcomment',authenticate, async function(req, res, next) {
 		console.log("Not here for sure")
 		if(this_comment){
 			return res.status(201).json({
-				status:'deleted successfully',
+				success:1,
+				msg:'deleted successfully',
 			})
 		}else{
-			return res.status(500).json({
-				status:'Can not delete',
+			return res.status(203).json({
+				success:0,
+				msg:'Can not delete',
 				data: this_comment
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
+		return res.status(203).json({
+			success:0,
 			status:'failed',
 			data:'err'
 		})

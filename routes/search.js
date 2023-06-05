@@ -50,7 +50,8 @@ app.post('/find/',authenticate,
 				let filteredResult = details.filter((entry) => entry.user_id !== user_id);
 				return res.status(201).json({
 					success: 1,
-					msg: filteredResult
+					msg:"success",
+					data: filteredResult
 				});
 			}else{
 				return res.status(203).json({

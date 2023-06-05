@@ -36,7 +36,8 @@ app.post('/sendlinkrequest',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&receiver_user_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -49,7 +50,8 @@ app.post('/sendlinkrequest',authenticate, async function(req, res, next) {
 		})
 	
 		if(receiveruid==undefined&&(receiveruid.user_id!=null||receiveruid.user_id!=undefined)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"No Student exists with given user_id"
 			})
 		}
@@ -61,19 +63,22 @@ app.post('/sendlinkrequest',authenticate, async function(req, res, next) {
 		})
 		if(new_link_req){
 			return res.status(201).json({
-				status:'success',
+				success:1,
+				msg:'success',
 				data: new_link_req
 			})
 		}
 		else{
-			return res.status(500).json({
-				status:'Failed to send link request',
+			return res.status(203).json({
+				success:0,
+				msg:'Failed to send link request',
 				data: new_link_req
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
 			data:'err'
 		})
 	}
@@ -88,7 +93,8 @@ app.post('/acceptlinkrequest',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&sender_user_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -111,18 +117,21 @@ app.post('/acceptlinkrequest',authenticate, async function(req, res, next) {
 		})
 		if(receiver_student&&sender_student&&link_req){
 			return res.status(201).json({
+				success:1,
 				status:'accepted successfully',
 				data: link_req
 			})
 		}else{
-			return res.status(500).json({
-				status:'An error occured',
+			return res.status(203).json({
+				success:0,
+				msg:'An error occured',
 				data: link_req
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
 			data:'err'
 		})
 	}
@@ -136,7 +145,8 @@ app.post('/rejectlinkrequest',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&sender_user_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -146,19 +156,22 @@ app.post('/rejectlinkrequest',authenticate, async function(req, res, next) {
 			receiver_user_id:user_id
 		})
 		if(link_req){
-			return res.status(204).json({
-				status:'deleted successfully',
+			return res.status(203).json({
+				success:1,
+				msg:'deleted successfully',
 				data: link_req
 			})
 		}else{
-			return res.status(500).json({
-				status:'Can not find link request',
+			return res.status(203).json({
+				success:0,
+				msg:'Can not find link request',
 				data: link_req
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
 			data:'err'
 		})
 	}
@@ -172,7 +185,8 @@ app.post('/removelink',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&other_uid)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -190,17 +204,20 @@ app.post('/removelink',authenticate, async function(req, res, next) {
 		})
 
 		if(receiver_student&&sender_student){
-			return res.status(204).json({
-				status:'deleted successfully'
+			return res.status(201).json({
+				success:1,
+				msg:'deleted successfully'
 			})
 		}else{
-			return res.status(500).json({
-				status:'unsuccessful'
+			return res.status(203).json({
+				success:0,
+				msg:'unsuccessful'
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
 			data:'err'
 		})
 	}
@@ -213,7 +230,8 @@ app.post('/fetchlinkrequests',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -223,19 +241,22 @@ app.post('/fetchlinkrequests',authenticate, async function(req, res, next) {
 		})
 
 		if(receiver_student){
-			return res.status(204).json({
+			return res.status(201).json({
+				success:1,
 				status:'deleted successfully',
 				data: receiver_student
 			})
 		}else{
-			return res.status(500).json({
-				status:'unsuccessful',
+			return res.status(203).json({
+				success:0,
+				msg:'unsuccessful',
 				data: receiver_student
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
 			data:'err'
 		})
 	}

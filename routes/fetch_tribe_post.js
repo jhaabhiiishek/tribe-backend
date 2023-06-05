@@ -16,13 +16,15 @@ app.post('/fetch_tribe_post',authenticate, async(req,res) => {
 	})
 
 	if(!tribe_requested){
-		return res.status(404).json({
+		return res.status(203).json({
+			success:0,
 			msg:"You do not belong to the tribe"
 		})
 	}
 
 	if(tribe_requested.posts==undefined||tribe_requested.posts==null){
-		return res.status(404).json({
+		return res.status(203).json({
+			success:0,
 			msg:"Could not fetch posts"
 		})
 	}
@@ -40,14 +42,14 @@ app.post('/fetch_tribe_post',authenticate, async(req,res) => {
 			)
 		}
         res.status(201).json({
-            status: 'Success',
+            success:1,
             data : {
                 post_response
             }
         })
     }catch(err){
-        return res.status(500).json({
-            status: 'Failed',
+        return res.status(203).json({
+            success:0,
             message : err
         })
     }

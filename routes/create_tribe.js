@@ -15,7 +15,8 @@ app.post('/createtribe',authenticate, async(req,res)=>{
 			tribe_type
 		}=req.body;
 		if(!(name&&tribe_type)){
-			return res.status(204).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -51,22 +52,22 @@ app.post('/createtribe',authenticate, async(req,res)=>{
 		})
 		if(tribe_entry){
 			res.status(201).json({
-				status:'success',
+				success:1,
 				data:{
 					tribe_entry
 				}
 			})
 		}else{
-			res.status(204).json({
-				status:'failed',
+			res.status(203).json({
+				success:0,
 				data:{
 					tribe_entry
 				}
 			})
 		}
 	}catch(err){
-		res.status(500).json({
-			status:'Failed',
+		res.status(203).json({
+			success:0,
 			message:err
 		})
 	}

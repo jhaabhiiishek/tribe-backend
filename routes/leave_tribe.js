@@ -46,7 +46,8 @@ app.post('/leave_tribe',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&tribe_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -66,14 +67,15 @@ app.post('/leave_tribe',authenticate, async function(req, res, next) {
 			}
 		})
 		if(user_removal&&tribe_removal){
-			return res.status(204).json({
+			return res.status(201).json({
+				success:1,
 				msg:"success",
 				data:user_tribe
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
 			data:'err'
 		})
 	}

@@ -40,7 +40,8 @@ app.post('/fetch_tribe_users',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -57,7 +58,8 @@ app.post('/fetch_tribe_users',authenticate, async function(req, res, next) {
 			})
 		}
 		if(user_tribe.members==undefined||user_tribe.members==null){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"No members in the given tribe"
 			})
 		}
@@ -80,13 +82,14 @@ app.post('/fetch_tribe_users',authenticate, async function(req, res, next) {
 		}
 		console.log("No prob3")
 		return res.status(201).json({
+			success:1,
 			msg:"Success",
 			data: filteredArray
 		})
 	}catch(err){
 		return res.status(500).json({
-			status:'failed',
-			data:'err'
+			success:0,
+			data:err
 		})
 	}
 });

@@ -10,7 +10,18 @@ const path=require("path");
 const cookieParser = require('cookie-parser');
 
 app.use(express.json())
-app.use(cors())
+const whitelist = ['http://localhost:3000', 'http://example2.com'];
+const corsOptions = {
+  credentials: true, // This is important.
+  origin: (origin, callback) => {
+    if(whitelist.includes(origin))
+      return callback(null, true)
+
+      callback(new Error('Not allowed by CORS'));
+  }
+}
+
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
     extended:true
@@ -36,7 +47,7 @@ const logout = require('./routes/logout')
 const changepassword = require('./routes/change_password')
 const delete_post = require('./routes/delete_post')
 const delete_tribe_post = require('./routes/delete_tribe_post')
-const email_verification = require('./routes/email_verification')
+const email_otp = require('./routes/email_otp')
 const fetch_tribe_post = require('./routes/fetch_tribe_post')
 const fetch_tribe_users = require('./routes/fetch_tribe_users')
 const fetch_tribes= require('./routes/fetch_tribes')
@@ -57,7 +68,7 @@ app.use(createtribepost)
 app.use(createtribe)
 app.use(delete_post)
 app.use(delete_tribe_post)
-app.use(email_verification)
+app.use(email_otp)
 app.use(fetch_tribe_post)
 app.use(fetch_tribe_users)
 app.use(fetch_tribes)

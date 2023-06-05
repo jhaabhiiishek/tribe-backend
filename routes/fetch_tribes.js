@@ -41,7 +41,8 @@ app.post('/delete_tribe',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&tribe_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -52,7 +53,8 @@ app.post('/delete_tribe',authenticate, async function(req, res, next) {
 		})
 
 		if(triberes==null||triberes==undefined){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Only creator can delete tribes"
 			})
 		}else{
@@ -61,6 +63,7 @@ app.post('/delete_tribe',authenticate, async function(req, res, next) {
 				creator:user_id
 			})
 			return res.status(201).json({
+				success:1,
 				msg:"Deleted successfully"
 			})
 		}
@@ -68,8 +71,8 @@ app.post('/delete_tribe',authenticate, async function(req, res, next) {
 
 		
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
 			data:'err'
 		})
 	}
@@ -85,7 +88,8 @@ app.post('/search_tribe',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&term&&count)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -96,14 +100,15 @@ app.post('/search_tribe',authenticate, async function(req, res, next) {
 			name : {$regex : final_term,$options:'i'}
 		}).limit(count)
 		if(user_tribe){
-			return res.status(204).json({
+			return res.status(201).json({
+				success:1,
 				msg:"success",
 				data:user_tribe
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
 			data:'err'
 		})
 	}
@@ -116,7 +121,8 @@ app.post('/fetch_tribes',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -127,20 +133,22 @@ app.post('/fetch_tribes',authenticate, async function(req, res, next) {
 		
 		if(user_tribe.tribes!=null||user_tribe.tribes!=undefined){
 			return res.status(201).json({
+				success:1,
 				msg:"success",
 				data:user_tribe.tribes
 			})
 		}
 
 		else{
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Can't fetch tribes",
 				data:user_tribe.tribes
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
+		return res.status(203).json({
+			success:0,
 			data:'err'
 		})
 	}

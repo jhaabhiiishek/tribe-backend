@@ -5,9 +5,9 @@ const bodyParser = require('body-parser');
 const nodemailer= require('nodemailer');
 const login_creds = require('../modules/login_creds')
 const otp_mod = require('../modules/otp')
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(bodyParser.raw());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.raw());
 
 app.post('/email_otp',async function(req,res){
 	try{
@@ -16,7 +16,8 @@ app.post('/email_otp',async function(req,res){
 		}= req.body;
 		
 		if(email_id==null||email_id==undefined){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter email"
 			})
 		}
@@ -24,7 +25,8 @@ app.post('/email_otp',async function(req,res){
 			email: email_id
 		})
 		if(email_check!=null||email_check!=undefined){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Email Already registered, login instead!"
 			})
 		}
@@ -86,7 +88,8 @@ app.post('/email_otp',async function(req,res){
 		}
 		if(new_otp==undefined||new_otp==null){
 			console.log("yha pehai")
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg : ' Can not send otp currently'
 			})
 		}
@@ -111,14 +114,15 @@ app.post('/email_otp',async function(req,res){
 				}else{
 					console.log("Email sent successfully!!")
 					return res.status(201).json({
+						success:1,
 						msg : 'Sent successfully'
 					})
 				}
 			})
 		})
-		console.log("khtam")
 	}catch(err){
-		return res.status(404).json({
+		return res.status(203).json({
+			success:0,
 			msg : 'Can not send',
 			data: err
 		})
@@ -133,8 +137,8 @@ app.post('/verify_otp',async function(req,res){
 		}= req.body;
 		
 		if(!(email_id&&otp)){
-			return res.status(404).json({
-				status :0,
+			return res.status(203).json({
+				success :0,
 				msg:"Enter email & otp"
 			})
 		}
@@ -142,8 +146,8 @@ app.post('/verify_otp',async function(req,res){
 			email: email_id
 		})
 		if(email_check!=null||email_check!=undefined){
-			return res.status(404).json({
-				status :0,
+			return res.status(203).json({
+				success :0,
 				msg:"Email Already registered, login instead!"
 			})
 		}
@@ -154,8 +158,8 @@ app.post('/verify_otp',async function(req,res){
 		console.log("Check 1")
 		if(otp_entered==null||otp_entered==undefined){
 			console.log("Check 2")
-			return res.status(404).json({
-				status :0,
+			return res.status(203).json({
+				success :0,
 				msg :" Can not find the given email"
 			})
 		}
@@ -169,8 +173,8 @@ app.post('/verify_otp',async function(req,res){
 			}
 			if(checkIfFifteenMinutesHavePassed(otp_entered.sent_at)){
 				console.log("Check 4")
-				return res.status(404).json({
-					status :0,
+				return res.status(204).json({
+					success :0,
 					msg :"Your OTP is no longer valid",
 				})
 			}
@@ -181,17 +185,17 @@ app.post('/verify_otp',async function(req,res){
 					verified : true
 				})
 				return res.status(201).json({
-					status :1,
+					success :1,
 					msg :" Successfully verified email, now signup",
 				})
 			}
-			return res.status(404).json({
-				status :0,
+			return res.status(203).json({
+				success :0,
 				msg :" Wrong OTP entered",
 			})
 		}
 	}catch(err){
-		return res.status(404).json({
+		return res.status(203).json({
 			msg : 'Can not verify',
 			data: err
 		})

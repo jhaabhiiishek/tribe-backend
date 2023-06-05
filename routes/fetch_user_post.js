@@ -11,7 +11,8 @@ app.post('/fetch_user_post',authenticate, async(req,res) => {
 	console.log(student_link)
 
 	if(student_link==null || student_link == undefined){
-		return res.status(201).json({
+		return res.status(203).json({
+			success:0,
             status: 'Complete student details first'
         })
 	}
@@ -31,12 +32,12 @@ app.post('/fetch_user_post',authenticate, async(req,res) => {
 			post_response.concat(item)
 		}
         res.status(201).json({
-            status: 'Success',
+            success:1,
             data : post_response
         })
     }catch(err){
-        return res.status(500).json({
-            status: 'Failed',
+        return res.status(203).json({
+            success:0,
             message : err
         })
     }

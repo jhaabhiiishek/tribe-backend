@@ -14,11 +14,11 @@ app.post('/createtribepost',authenticate,async(req,res)=>{
 			media_link,
 		} = req.body
 		if(!(user_id&&tribe_id)){
-			return res.status(201).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
-		console.log("shuru hua hu")
 
 		let num = 0;
 		let val = 0;
@@ -40,7 +40,8 @@ app.post('/createtribepost',authenticate,async(req,res)=>{
 		})
 
 		if(!tribe_requested){
-			return res.status(204).json({
+			return res.status(203).json({
+				success:0,
 				msg:"You do not belong to the tribe"
 			})
 		}
@@ -63,14 +64,14 @@ app.post('/createtribepost',authenticate,async(req,res)=>{
 		})
 
 		res.status(201).json({
-			status:'success',
+			success:1,
 			msg:{
 				details
 			}
 		})
 	}catch(err){
-		res.status(500).json({
-			status:'Failed',
+		res.status(203).json({
+			success:0,
 			message:err
 		})
 	}

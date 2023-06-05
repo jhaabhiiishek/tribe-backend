@@ -18,7 +18,8 @@ app.post('/addproject',authenticate, async(req,res)=>{
 			project_link
 		}=req.body;
 		if(!(user_id&&project_name&&project_type&&project_link&&description)){
-			return res.status(204).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -48,22 +49,25 @@ app.post('/addproject',authenticate, async(req,res)=>{
 		})
 		if(project_entry){
 			res.status(201).json({
-				status:'success',
+				success:1,
+				msg:'success',
 				data:{
 					project_entry
 				}
 			})
 		}else{
-			res.status(204).json({
-				status:'failed',
+			res.status(203).json({
+				success:0,
+				msg:'failed',
 				data:{
 					project_entry
 				}
 			})
 		}
 	}catch(err){
-		res.status(500).json({
-			status:'Failed',
+		res.status(203).json({
+			success:0,
+			msg:'Failed',
 			message:err
 		})
 	}
@@ -77,7 +81,8 @@ app.post('/deleteproject',authenticate, async(req,res)=>{
 			project_name
 		}=req.body;
 		if(!(user_id&&project_name)){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -93,26 +98,27 @@ app.post('/deleteproject',authenticate, async(req,res)=>{
 			})
 			if(delete_project){
 				res.status(201).json({
-					status:'success',
+					success:1,
+					msg:'success',
 					data:{
 						project_entry
 					}
 				})
 			}else{
-				res.status(404).json({
-					status:'failed',
+				res.status(203).json({
+					success:0,
 					msg:"Cant delete the project"
 				})
 			}
 		}else{
-			res.status(404).json({
+			res.status(203).json({
 				status:'failed',
 				msg:"Cant find the project"
 			})
 		}
 	}catch(err){
-		res.status(500).json({
-			status:'Failed',
+		res.status(203).json({
+			success:0,
 			message:err
 		})
 	}
@@ -125,7 +131,8 @@ app.post('/fetchprojects',authenticate, async(req,res)=>{
 		}=req.body;
 
 		if(!(user_id)){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter user_id"
 			})
 		}
@@ -135,15 +142,15 @@ app.post('/fetchprojects',authenticate, async(req,res)=>{
 		})
 		
 		if(!user){
-			res.status(404).json({
-				status:'failed',
+			res.status(203).json({
+				success:0,
 				msg:"Cant find the user"
 			})
 		}else{
 			if(user.links[0]==null||user.links[0]==undefined){
-				res.status(500).json({
-					status:'Failed',
-					message:"Make links to explore their projects"
+				res.status(203).json({
+					success:0,
+					msg:"Make links to explore their projects"
 				})
 			}else{
 				let length = user.links.length;
@@ -157,15 +164,16 @@ app.post('/fetchprojects',authenticate, async(req,res)=>{
 				}
 				let final_array = collection_array.flat()
 				res.status(201).json({
-					status:'Done',
+					success:1,
+					msg:'Done',
 					data: final_array
 				})
 			}
 		}
 	}catch(err){
-		res.status(500).json({
-			status:'Failed',
-			message:err
+		res.status(203).json({
+			success:0,
+			msg:err
 		})
 	}
 })
@@ -178,7 +186,8 @@ app.post('/fetchtribeprojects',authenticate, async(req,res)=>{
 		}=req.body;
 
 		if(!(user_id&&tribe_id)){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter user_id & tribe_id"
 			})
 		}
@@ -195,15 +204,15 @@ app.post('/fetchtribeprojects',authenticate, async(req,res)=>{
 
 		
 		if((user!=null&&tribe_search!=null)){
-			res.status(404).json({
-				status:'failed',
+			res.status(203).json({
+				success:0,
 				msg:"Cant find the user for this tribe"
 			})
 		}else{
 			if(tribe_search.members[1]==null||tribe_search.members[1]==undefined){
-				res.status(404).json({
-					status:'Failed',
-					message:"Tribe doesnt have enough people"
+				res.status(203).json({
+					success:0,
+					msg:"Tribe doesnt have enough people"
 				})
 			}else{
 				let length =tribe_search.members.length;
@@ -219,14 +228,16 @@ app.post('/fetchtribeprojects',authenticate, async(req,res)=>{
 				}
 				let final_array = collection_array.flat()
 				res.status(201).json({
-					status:'Done',
+					success:0,
+					msg:'Done',
 					data: final_array
 				})
 			}
 		}
 	}catch(err){
-		res.status(500).json({
-			status:'Failed',
+		res.status(203).json({
+			success:0,
+			msg:'Failed',
 			message:err
 		})
 	}
@@ -242,7 +253,8 @@ app.post('/likeprojects',authenticate, async(req,res)=>{
 		}=req.body;
 
 		if(!(user_id&& project_user_id&&user_project_id)){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the fields"
 			})
 		}
@@ -280,18 +292,20 @@ app.post('/likeprojects',authenticate, async(req,res)=>{
 		})}
 		
 		if(!project_like){
-			res.status(404).json({
-				status:'failed',
+			res.status(203).json({
+				success:0,
 				msg:"Cant update likes"
 			})
 		}else{
 			res.status(201).json({
-				status:'Liked'
+				success:1,
+				msg:'Liked'
 			})
 		}
 	}catch(err){
-		res.status(500).json({
-			status:'Failed',
+		res.status(203).json({
+			success:0,
+			msg:'Failed',
 			message:err
 		})
 	}

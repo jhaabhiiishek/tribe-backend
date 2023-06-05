@@ -28,7 +28,8 @@ app.post('/changepassword',authenticate, async function(req, res, next) {
 	const { user_id, password } = req.body;
 
 	if(!(user_id&&password)){
-		return res.status(500).json({
+		return res.status(203).json({
+			success:0,
 			msg:"Enter all the required fields"
 		})
 	}
@@ -38,7 +39,8 @@ app.post('/changepassword',authenticate, async function(req, res, next) {
 	})
 
 	if(searchuid==undefined&&(searchuid.user_id!=null||searchuid.user_id!=undefined)){
-		return res.status(500).json({
+		return res.status(203).json({
+			success:0,
 			msg:"No Student exists with given user_id"
 		})
 	}
@@ -54,7 +56,7 @@ app.post('/changepassword',authenticate, async function(req, res, next) {
 		})
 		if(result){
 			return res.status(201).json({
-				status: 'Success',
+				success:1,
 				data : {
 					"user_id": user_id,
 					"password":hash

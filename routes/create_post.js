@@ -39,14 +39,14 @@ app.post('/createpost',authenticate,async(req,res)=>{
 		})
 		console.log(details)
 		res.status(201).json({
-			status:'success',
+			success:1,
 			msg:{
 				details
 			}
 		})
 	}catch(err){
-		res.status(500).json({
-			status:'Failed',
+		res.status(203).json({
+			success:0,
 			message:err
 		})
 	}

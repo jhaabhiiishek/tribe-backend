@@ -40,7 +40,8 @@ app.post('/tribe_invite',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id&&tribe_id&&receiver_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -50,7 +51,8 @@ app.post('/tribe_invite',authenticate, async function(req, res, next) {
 		})
 
 		if(tribe_fetch==null||tribe_fetch==undefined){
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"You do not belong to the tribe",
 				data:tribe_fetch
 			})
@@ -63,15 +65,17 @@ app.post('/tribe_invite',authenticate, async function(req, res, next) {
 			tribe_id:tribe_id
 		})
 		if(invite){
-			return res.status(204).json({
+			return res.status(201).json({
+				success:1,
 				msg:"success",
 				data:invite
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
-			status:'failed',
-			data:'err'
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
+			data:err
 		})
 	}
 });
@@ -82,7 +86,8 @@ app.post('/fetch_tribe_invites',authenticate, async function(req, res, next) {
 		} = req.body;
 	
 		if(!(user_id)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -91,20 +96,22 @@ app.post('/fetch_tribe_invites',authenticate, async function(req, res, next) {
 			receiver_id:user_id,
 		})
 		if(invite!=null||invite!=undefined){
-			return res.status(204).json({
+			return res.status(201).json({
+				success:1,
 				msg:"success",
 				data:invite
 			})
 		}else{
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Can not fetch invites",
 				data:invite
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
+		return res.status(203).json({
 			status:'failed',
-			data:'err'
+			data:err
 		})
 	}
 });
@@ -117,7 +124,8 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 		} = req.body;
 	
 		if(!(user_id&&tribe_invite_id&&response_to_invite)){
-			return res.status(500).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
@@ -148,20 +156,23 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 			receiver_id:user_id
 		})
 		if(deleteinvite!=null||deleteinvite!=undefined){
-			return res.status(204).json({
+			return res.status(201).json({
+				success:1,
 				msg:"successfull",
 				data:deleteinvite
 			})
 		}else{
-			return res.status(404).json({
+			return res.status(203).json({
+				success:0,
 				msg:"Can not delete invites",
 				data:deleteinvite
 			})
 		}
 	}catch(err){
-		return res.status(500).json({
+		return res.status(203).json({
+			success:0,
 			status:'failed',
-			data:'err'
+			data:err
 		})
 	}
 });
