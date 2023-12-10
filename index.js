@@ -61,6 +61,7 @@ const links = require('./routes/links')
 const profile = require('./routes/profile')
 const search = require('./routes/search')
 const tribe_invite= require('./routes/tribe_invite')
+const uploadSingleFile= require('./routes/uploadSingleFile')
 
 app.use(changepassword)
 app.use(createpost)
@@ -83,6 +84,7 @@ app.use(search)
 app.use(signup)
 app.use(studentDetails)
 app.use(tribe_invite)
+app.use(uploadSingleFile)
 
 
 

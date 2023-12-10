@@ -43,7 +43,7 @@ const verifyToken = async (req, res, next) => {
                     });
                 }
                 verified_user_id = decoded.user_id;
-                if(req.body.user_id!=verified_user_id){
+                if(req.body.user_id&&(req.body.user_id!=verified_user_id)){
                     return res.status(203).json({
                         success: 0,
                         message: "Bad request made"

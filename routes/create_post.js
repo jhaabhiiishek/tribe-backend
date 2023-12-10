@@ -6,10 +6,26 @@ const app = express()
 app.post('/createpost',authenticate,async(req,res)=>{
 	const{
 		user_id,
-		tags,
-		text,
-		media_link,
+		text
+		// media_link,
 	} = req.body
+
+		if(!(user_id&&text)&&!(user_id&&media_link)){
+			return res.status(203).json({
+				success:0,
+				msg:"The post can not be empty"
+			})
+		}
+
+		if (text.length>2048){
+			return res.status(203).json({
+				success:0,
+				msg: "post text can not be greater than 2048 characters"
+			})
+		}
+
+		const words = text.split(" ")
+		const tags = words.filter((string) => string.startsWith("#"));
 
 		let num = 0;
 		let val = 0;
@@ -34,20 +50,19 @@ app.post('/createpost',authenticate,async(req,res)=>{
 			tags:tags,
 			is_tribe:false,
 			text:text ,
-			media_link:media_link,
+			// media_link:media_link,
 			upload_date:new Date()
 		})
 		console.log(details)
-		res.status(201).json({
+		return res.status(201).json({
 			success:1,
-			msg:{
-				details
-			}
+			data: details,
+			msg:"Post created"
 		})
 	}catch(err){
-		res.status(203).json({
+		return res.status(203).json({
 			success:0,
-			message:err
+			msg:err
 		})
 	}
 })

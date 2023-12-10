@@ -31,10 +31,10 @@ const postSchema = new mongoose.Schema({
         type : String,
         required : false
     },
-	media_link : {
-        type : String,
-        required : false
-    },
+	// media_link : {
+    //     type : String,
+    //     required : false
+    // },
 	upload_date:{
 		type : Date,
 		required:true

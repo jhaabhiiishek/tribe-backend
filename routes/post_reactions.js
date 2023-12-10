@@ -52,6 +52,7 @@ app.post('/upvote',authenticate, async function(req, res, next) {
 			user_id:posted_by,
 			user_post_id:user_post_id
 		})
+		
 		if((posts_so_far==undefined||posts_so_far==null)&&posts_so_far.upvotes){
 			val = posts_so_far.upvotes
 		}
@@ -81,6 +82,7 @@ app.post('/upvote',authenticate, async function(req, res, next) {
 				$pull:{ upvoted_by:user_id}
 			})
 		}else{
+			console.log("num= ",num)
 			searchpost = await post.updateOne({
 				user_id:posted_by,
 				user_post_id:user_post_id
