@@ -131,11 +131,20 @@ app.post('/fetch_tribes',authenticate, async function(req, res, next) {
 			user_id:user_id
 		})
 		
-		if(user_tribe.tribes!=null||user_tribe.tribes!=undefined){
+		var tribes_data = []
+
+		for(let i = 0;i<user_tribe.tribes.length;i++){
+			const tribe_data = await tribe.findOne({
+				tribe_id: user_tribe.tribes[i]
+			})
+			tribes_data.push(tribe_data)
+		}
+
+		if(user_tribe.tribes!=undefined){
 			return res.status(201).json({
 				success:1,
 				msg:"success",
-				data:user_tribe.tribes
+				data:tribes_data
 			})
 		}
 
@@ -143,7 +152,7 @@ app.post('/fetch_tribes',authenticate, async function(req, res, next) {
 			return res.status(203).json({
 				success:0,
 				msg:"Can't fetch tribes",
-				data:user_tribe.tribes
+				data:tribes_data
 			})
 		}
 	}catch(err){

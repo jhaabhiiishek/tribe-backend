@@ -26,9 +26,9 @@ app.post('/find/',authenticate,
 		try{
 			const {
 				user_id,
-				key,
-				value,
-				count
+				key
+				// value,
+				// count
 			} = req.body
 
 			if(!(user_id)){
@@ -39,7 +39,7 @@ app.post('/find/',authenticate,
 			}
 			
 			const studentDetails = await student.findOne({
-				user_id:user_id
+				user_id:key
 			})
 
 			let val = {};
@@ -57,6 +57,54 @@ app.post('/find/',authenticate,
 				return res.status(203).json({
 					success: 0,
 					msg: "Student details doesnt exist"
+				});
+			}
+
+		}catch(err){
+			console.log(err);
+			return res.status(203).json({
+				success: 0,
+				msg: err
+			});
+		}
+	}
+);
+
+app.post('/search',authenticate,
+	async function(req, res) {
+		try{
+			const {
+				user_id,
+				key,
+				noOfValues
+			} = req.body
+
+			if(!(user_id)){
+				return res.status(203).json({
+					success:0,
+					msg:"User_id is required"
+				})
+			}
+			
+			const studentDetails = await student.find({
+				user_id:{
+					$regex: key
+				}
+			}).limit(noOfValues)
+			let filteredResult = studentDetails.filter((entry) => entry.user_id !== user_id);
+
+			console.log(filteredResult)
+			console.log(studentDetails)
+			if(filteredResult!=null){
+				return res.status(201).json({
+					success: 1,
+					msg:"success",
+					data: filteredResult
+				});
+			}else{
+				return res.status(203).json({
+					success: 0,
+					msg: "Can't find student with given details"
 				});
 			}
 
