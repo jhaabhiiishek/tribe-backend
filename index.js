@@ -90,7 +90,7 @@ app.use(search)
 app.use(signup)
 app.use(studentDetails)
 app.use(tribe_invite)
-app.use(uploadSingleFile)
+// app.use(uploadSingleFile)
 
 
 
