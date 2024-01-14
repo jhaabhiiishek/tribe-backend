@@ -4,6 +4,10 @@ const tribe_inviteSchema = new mongoose.Schema({
         type : Number,
         required:true
     },
+    tribe_name:{
+        type : String,
+        required:true
+    },
     sender:{
         type : String,
         required:true

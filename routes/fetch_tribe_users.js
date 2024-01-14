@@ -31,7 +31,6 @@ app.use(passport.session());
 
 
 app.post('/fetch_tribe_users',authenticate, async function(req, res, next) {
-	
 	try{
 		const {
 			user_id,
@@ -93,5 +92,4 @@ app.post('/fetch_tribe_users',authenticate, async function(req, res, next) {
 		})
 	}
 });
-
 module.exports = app;

@@ -10,7 +10,7 @@ app.post('/createpost',authenticate,async(req,res)=>{
 		// media_link,
 	} = req.body
 
-		if(!(user_id&&text)&&!(user_id&&media_link)){
+		if(!(user_id&&text)){
 			return res.status(203).json({
 				success:0,
 				msg:"The post can not be empty"

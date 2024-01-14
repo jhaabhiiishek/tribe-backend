@@ -69,13 +69,14 @@ app.post('/leave_tribe',authenticate, async function(req, res, next) {
 		if(user_removal&&tribe_removal){
 			return res.status(201).json({
 				success:1,
-				msg:"success",
+				msg:"Left Tribe Successfully",
 				data:user_tribe
 			})
 		}
 	}catch(err){
 		return res.status(203).json({
 			success:0,
+			msg:"Error in leaving tribe",
 			data:'err'
 		})
 	}

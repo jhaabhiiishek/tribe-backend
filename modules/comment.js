@@ -29,10 +29,6 @@ const commentSchema = new mongoose.Schema({
 	upload_date:{
 		type : String,
 		required:true
-    },
-    parent_comment_id : {
-        type : String,
-		required:false
     }
 })
 

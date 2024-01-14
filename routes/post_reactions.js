@@ -17,6 +17,7 @@ const link = require('../modules/pendinglinks')
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const comment = require('../modules/comment')
+const notifications = require('../modules/notifications')
 
 app.use(session({
 	secret: process.env.TOKEN_KEY, // the secret used to sign the session ID cookie
@@ -99,6 +100,12 @@ app.post('/upvote',authenticate, async function(req, res, next) {
 				msg:"No such post exists"
 			})
 		}else{
+			const notif = await notifications.create({
+				user_id : posted_by,
+				type:'liked',
+				action_performed_by:user_id,
+				action_on_User_post_id : user_post_id
+			})
 			return res.status(201).json({
 				success:1,
 				msg:"Upvoted!",
@@ -113,6 +120,57 @@ app.post('/upvote',authenticate, async function(req, res, next) {
 		})
 	}
 });
+
+app.post('/fetch_upvotes_of_user',authenticate, async function(req, res, next) {
+	
+	try{
+		const {
+			user_id
+		} = req.body;
+	
+		if(!(user_id)){
+			return res.status(203).json({
+				success:0,
+				msg:"Enter all the required fields"
+			})
+		}
+
+		console.log("here toh pka")
+
+		const posts_liked = await post.find({
+			upvoted_by:{
+				$in:[user_id]
+			}})
+
+		var arrayToBeReturned =[]
+		if(posts_liked){
+			for(var i=0;i<posts_liked.length;i++){
+				const tempObject = {
+					post_user_id:posts_liked[i].user_id,
+					post_user_post_id :posts_liked[i].user_post_id
+				}
+				arrayToBeReturned.push(tempObject)
+			}
+			return res.status(201).json({
+				success:1,
+				msg:"User Likes updated",
+				data:arrayToBeReturned
+			})
+			
+		}
+		
+
+		
+	}catch(err){
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
+			data:err,
+			increased:false
+		})
+	}
+});
+
 
 
 app.post('/getupvotedby',authenticate, async function(req, res, next) {
@@ -198,6 +256,12 @@ app.post('/comment',authenticate, async function(req, res, next) {
 		}
 
 		if(comments){
+			const notif = await notifications.create({
+				user_id : post_by_user_id,
+				type:'commented',
+				action_performed_by:user_id,
+				action_on_User_post_id : user_post_id
+			})
 			return res.status(201).json({
 				success:1,
 				msg:'commented successfully',
@@ -260,7 +324,7 @@ app.post('/likepostcomment',authenticate, async function(req, res, next) {
 		if(like_comment){
 			return res.status(201).json({
 				success:1,
-				msg:'commented successfully',
+				msg:'Liked successfully',
 				data: like_comment
 			})
 		}else{
@@ -283,8 +347,7 @@ app.post('/fetchpostcomment',authenticate, async function(req, res, next) {
 			user_id,
 			post_by_user_id,
 			user_post_id,
-			entries_required,
-			parent_comment_id
+			entries_required
 		} = req.body;
 	
 		if(!(user_id&&post_by_user_id&&user_post_id)){
@@ -297,33 +360,19 @@ app.post('/fetchpostcomment',authenticate, async function(req, res, next) {
 		let response_items
 		const comments = await comment.find({
 			post_by_user_id:post_by_user_id,
-			user_post_id:user_post_id,
-			parent_comment_id:''
-		})
-		if(comments.length>entries_required){
-			response_items = await comment.find({
-				post_by_user_id:post_by_user_id,
-				user_post_id:user_post_id,
-				parent_comment_id:parent_comment_id
-			}).sort({upvotes : -1}).limit(entries_required)
-		}else{
-			response_items = await comment.find({
-				post_by_user_id:post_by_user_id,
-				user_post_id:user_post_id,
-				parent_comment_id:parent_comment_id
-			})
-		}
-
+			user_post_id:user_post_id
+		}).sort({upvotes : -1}).limit(entries_required)
 		if(comments){
 			return res.status(201).json({
 				success:1,
 				msg:'fetched successfully',
-				data: response_items
+				data: comments
 			})
 		}else{
 			return res.status(203).json({
 				success:0,
 				msg:'Can not find comments',
+				data: comments
 			})
 		}
 });

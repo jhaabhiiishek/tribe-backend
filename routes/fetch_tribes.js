@@ -84,14 +84,28 @@ app.post('/search_tribe',authenticate, async function(req, res, next) {
 		const {
 			user_id,
 			term,
-			count
+			count,
+			tribe_id
 		} = req.body;
 	
-		if(!(user_id&&term&&count)){
+		if(!((user_id&&term&&count)||(user_id&&tribe_id))){
 			return res.status(203).json({
 				success:0,
 				msg:"Enter all the required fields"
 			})
+		}
+
+		if(tribe_id){
+			const user_tribe = await tribe.findOne({
+				tribe_id:tribe_id
+			})
+			if(user_tribe){
+				return res.status(201).json({
+					success:1,
+					msg:"success",
+					data:user_tribe
+				})
+			}
 		}
 
 		let final_term = '/'+term+'/'
@@ -126,32 +140,33 @@ app.post('/fetch_tribes',authenticate, async function(req, res, next) {
 				msg:"Enter all the required fields"
 			})
 		}
-
+		
 		const user_tribe = await student.findOne({
 			user_id:user_id
 		})
+		console.log(user_tribe)
 		
 		var tribes_data = []
+		console.log('here')
+		if(user_tribe &&(user_tribe.tribes.length>0)){
+			for(let i = 0;i<user_tribe.tribes.length;i++){
+				const tribe_data = await tribe.findOne({
+					tribe_id: user_tribe.tribes[i]
+				})
+				tribes_data.push(tribe_data)
+			}
 
-		for(let i = 0;i<user_tribe.tribes.length;i++){
-			const tribe_data = await tribe.findOne({
-				tribe_id: user_tribe.tribes[i]
-			})
-			tribes_data.push(tribe_data)
-		}
-
-		if(user_tribe.tribes!=undefined){
 			return res.status(201).json({
 				success:1,
 				msg:"success",
 				data:tribes_data
 			})
 		}
-
+		
 		else{
 			return res.status(203).json({
 				success:0,
-				msg:"Can't fetch tribes",
+				msg:"No tribes to display",
 				data:tribes_data
 			})
 		}

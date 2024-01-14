@@ -12,7 +12,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport')
 const authenticate = require('../auth/authentication')
 const mongoose = require('mongoose')
-const tribe_invite = require('../modules/tribe_invite_module')
+const tribeinvite = require('../modules/tribe_invite_module')
 const login_creds = require('../modules/login_creds')
 const link = require('../modules/pendinglinks')
 
@@ -47,7 +47,8 @@ app.post('/tribe_invite',authenticate, async function(req, res, next) {
 		}
 
 		const tribe_fetch = await tribe.findOne({
-			tribe_id:tribe_id
+			tribe_id:tribe_id,
+			members:{$in:[user_id]}
 		})
 
 		if(tribe_fetch==null||tribe_fetch==undefined){
@@ -58,16 +59,23 @@ app.post('/tribe_invite',authenticate, async function(req, res, next) {
 			})
 		}
 
-		const invite = await tribe_invite.create({
+		const invite = await tribeinvite.create({
 			sender:user_id,
-			receiver_id:receiver_id,
+			receiver:receiver_id,
 			sent_at: new Date(),
 			tribe_id:tribe_id
 		})
 		if(invite){
+
 			return res.status(201).json({
 				success:1,
 				msg:"success",
+				data:invite
+			})
+		}else{
+			return res.status(203).json({
+				success:0,
+				msg:"Can not invite",
 				data:invite
 			})
 		}
@@ -92,9 +100,9 @@ app.post('/fetch_tribe_invites',authenticate, async function(req, res, next) {
 			})
 		}
 
-		const invite = await tribe_invite.find({
-			receiver_id:user_id,
-		})
+		const invite = await tribeinvite.find({
+			receiver:user_id,
+		}).sort({ $natural: -1 })
 		if(invite!=null||invite!=undefined){
 			return res.status(201).json({
 				success:1,
@@ -132,9 +140,9 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 		}
 
 		if(response_to_invite){
-			const deleteinvite = await tribe_invite.findOne({
+			const deleteinvite = await tribeinvite.findOne({
 				_id:tribe_invite_id,
-				receiver_id:user_id
+				receiver:user_id
 			})
 			const invite = await student.findByIdAndUpdate({
 				user_id:user_id
@@ -152,9 +160,9 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 				}
 			})
 		}
-		const deleteinvite = await tribe_invite.findOneAndDelete({
+		const deleteinvite = await tribeinvite.findOneAndDelete({
 			_id:tribe_invite_id,
-			receiver_id:user_id
+			receiver:user_id
 		})
 		if(deleteinvite!=null||deleteinvite!=undefined){
 			return res.status(201).json({

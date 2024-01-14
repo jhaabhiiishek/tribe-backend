@@ -8,7 +8,7 @@ const app = express()
 const authenticate = require('../auth/authentication')
 
 app.post('/fetch_tribe_post',authenticate, async(req,res) => {
-	const {user_id} = req.body
+	const {user_id,tribe_id} = req.body
 
 	const tribe_requested = await tribe.findOne({
 		tribe_id:tribe_id,
@@ -34,18 +34,18 @@ app.post('/fetch_tribe_post',authenticate, async(req,res) => {
 
 	try{
 		for(var i =0;i<l;i++){
-			post_response.concat(
-				await post.find({
-					is_tribe:true,
-					upload_date: {$gte: new Date((new Date().getTime() - (3 * 24 * 60 * 60 * 1000)))}
-				})
-			)
+			console.log(tribe_requested.posts[i]._id)
+			const postThis = await post.findOne({
+				_id:tribe_requested.posts[i]._id
+				// is_tribe:true
+			}).sort({ $natural: -1 })
+			console.log(postThis)
+			post_response.push(postThis)
 		}
+		console.log("sending",post_response)
         res.status(201).json({
             success:1,
-            data : {
-                post_response
-            }
+            data : post_response
         })
     }catch(err){
         return res.status(203).json({

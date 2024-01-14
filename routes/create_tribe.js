@@ -12,7 +12,9 @@ app.post('/createtribe',authenticate, async(req,res)=>{
 		const {
 			user_id,
 			name,
-			tribe_type
+			tribe_type,
+			tribe_location,
+			tags
 		}=req.body;
 		if(!(name&&tribe_type)){
 			return res.status(203).json({
@@ -42,6 +44,8 @@ app.post('/createtribe',authenticate, async(req,res)=>{
 				user_id
 			],
 			tribe_type : tribe_type,
+			tags:tags,
+			tribe_location:tribe_location
 		})
 		const user_update = await student.updateOne({
 			user_id:user_id
@@ -53,16 +57,12 @@ app.post('/createtribe',authenticate, async(req,res)=>{
 		if(tribe_entry){
 			res.status(201).json({
 				success:1,
-				data:{
-					tribe_entry
-				}
+				data:tribe_entry
 			})
 		}else{
 			res.status(203).json({
 				success:0,
-				data:{
-					tribe_entry
-				}
+				data:tribe_entry
 			})
 		}
 	}catch(err){

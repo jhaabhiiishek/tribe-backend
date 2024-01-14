@@ -10,7 +10,7 @@ const path=require("path");
 const cookieParser = require('cookie-parser');
 
 app.use(express.json())
-const whitelist = ['http://localhost:3000', 'http://example2.com'];
+const whitelist = ['http://localhost:3000', 'http://example2.com','*'];
 const corsOptions = {
   credentials: true, // This is important.
   origin: (origin, callback) => {
@@ -63,6 +63,8 @@ const profile = require('./routes/profile')
 const search = require('./routes/search')
 const tribe_invite= require('./routes/tribe_invite')
 const uploadSingleFile= require('./routes/uploadSingleFile')
+const fetch_post_by_uid = require('./routes/fetch_post_by_uid')
+const fetch_notifications = require('./routes/fetch_notifications')
 
 app.use(changepassword)
 app.use(createpost)
@@ -70,6 +72,7 @@ app.use(createtribepost)
 app.use(createtribe)
 app.use(delete_post)
 app.use(delete_tribe_post)
+app.use(fetch_notifications)
 app.use(email_otp)
 app.use(fetch_tribe_post)
 app.use(fetch_tribe_users)
@@ -79,6 +82,7 @@ app.use(leave_tribe)
 app.use(links)
 app.use(login)
 app.use(logout)
+app.use(fetch_post_by_uid)
 app.use(fetch_links)
 app.use(postreaction)
 app.use(profile)

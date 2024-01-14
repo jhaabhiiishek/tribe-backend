@@ -24,6 +24,14 @@ const tribeSchema = new mongoose.Schema({
         type : Array,
         required : false
     },
+    tags:{
+        type: Array,
+		required: true
+    },
+    tribe_location:{
+        type : String,
+        required : true
+    }
 })
 
 const tribe = mongoose.model('tribe',tribeSchema)

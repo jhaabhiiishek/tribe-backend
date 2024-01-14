@@ -26,7 +26,7 @@ app.post('/fetch_user_post',authenticate, async(req,res) => {
 				user_id:student_link.links[i],
 				is_tribe:false,
 				// upload_date: {$gte: new Date((new Date().getTime() - (3 * 24 * 60 * 60 * 1000)))}
-			})
+			}).sort({ $natural: -1 })
 			post_response.push(item)
 		}
 		console.log(post_response)

@@ -8,27 +8,31 @@ app.post('/createtribepost',authenticate,async(req,res)=>{
 	try{
 		const{
 			user_id,
-			tags,
 			tribe_id,
-			text ,
-			media_link,
+			text 
 		} = req.body
+
 		if(!(user_id&&tribe_id)){
 			return res.status(203).json({
 				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
-
+		
+		const words = text.split(" ")
+		const tags = words.filter((string) => string.startsWith("#"));
+		
 		let num = 0;
 		let val = 0;
 		const posts_so_far = await post.find({
 			user_id:user_id
 		}).sort({user_post_id : -1}).limit(1)
 		console.log(posts_so_far)
-		val = posts_so_far[0].user_post_id;
-		if(val==null||val ==undefined||val==NaN){
-			val = 0;
+		if(posts_so_far && posts_so_far.length>0){
+			val = posts_so_far[0].user_post_id;
+			if(val==null||val ==undefined||val==NaN){
+				val = 0;
+			}
 		}
 		num = val+1;
 		console.log(num)
@@ -36,8 +40,10 @@ app.post('/createtribepost',authenticate,async(req,res)=>{
 
 		const tribe_requested = await tribe.findOne({
 			tribe_id:tribe_id,
-			members:user_id
+			members:{$in:[user_id]}
 		})
+
+		console.log(tribe_requested)
 
 		if(!tribe_requested){
 			return res.status(203).json({
@@ -53,7 +59,7 @@ app.post('/createtribepost',authenticate,async(req,res)=>{
 			tags:tags,
 			is_tribe:true,
 			text:text ,
-			media_link:media_link,
+			// media_link:media_link,
 			upload_date:new Date()
 		})
 
@@ -65,14 +71,13 @@ app.post('/createtribepost',authenticate,async(req,res)=>{
 
 		res.status(201).json({
 			success:1,
-			msg:{
-				details
-			}
+			data: details,
+			msg:"Post created"
 		})
 	}catch(err){
 		res.status(203).json({
 			success:0,
-			message:err
+			msg:"Can't create post"
 		})
 	}
 })

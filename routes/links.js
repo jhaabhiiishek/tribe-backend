@@ -55,6 +55,17 @@ app.post('/sendlinkrequest',authenticate, async function(req, res, next) {
 				msg:"No Student exists with given user_id"
 			})
 		}
+
+		const prev_link_check = await link.findOne({
+			sender_user_id:user_id,
+			receiver_user_id:receiver_user_id
+		})
+		if(prev_link_check){
+			return res.status(203).json({
+				success:0,
+				msg:"Link request already sent"
+			})
+		}
 	
 		const new_link_req = await link.create({
 			sender_user_id:user_id,
@@ -64,7 +75,7 @@ app.post('/sendlinkrequest',authenticate, async function(req, res, next) {
 		if(new_link_req){
 			return res.status(201).json({
 				success:1,
-				msg:'success',
+				msg:'request sent',
 				data: new_link_req
 			})
 		}
@@ -118,7 +129,7 @@ app.post('/acceptlinkrequest',authenticate, async function(req, res, next) {
 		if(receiver_student&&sender_student&&link_req){
 			return res.status(201).json({
 				success:1,
-				status:'accepted successfully',
+				msg:'accepted successfully',
 				data: link_req
 			})
 		}else{
@@ -236,14 +247,15 @@ app.post('/fetchlinkrequests',authenticate, async function(req, res, next) {
 			})
 		}
 	
-		const receiver_student = await student.find({
+		const receiver_student = await link.find({
 			receiver_user_id:user_id
 		})
+		console.log(receiver_student)
 
 		if(receiver_student){
 			return res.status(201).json({
 				success:1,
-				status:'deleted successfully',
+				status:'success',
 				data: receiver_student
 			})
 		}else{
@@ -251,6 +263,48 @@ app.post('/fetchlinkrequests',authenticate, async function(req, res, next) {
 				success:0,
 				msg:'unsuccessful',
 				data: receiver_student
+			})
+		}
+	}catch(err){
+		return res.status(203).json({
+			success:0,
+			msg:'failed',
+			data:'err'
+		})
+	}
+});
+app.post('/fetchsentrequests',authenticate, async function(req, res, next) {
+	try{
+		const {
+			user_id
+		} = req.body;
+	
+		if(!(user_id)){
+			return res.status(203).json({
+				success:0,
+				msg:"Enter all the required fields"
+			})
+		}
+	
+		const receiver_student = await student.find({
+			sender_user_id:user_id
+		})
+
+		var arr = []
+		for(var i=0;i<receiver_student.length;i++){
+			arr.push(receiver_student[i].receiver_user_id)
+		}
+		if(receiver_student){
+			return res.status(201).json({
+				success:1,
+				status:'success',
+				data: arr
+			})
+		}else{
+			return res.status(203).json({
+				success:0,
+				msg:'unsuccessful',
+				data: arr
 			})
 		}
 	}catch(err){

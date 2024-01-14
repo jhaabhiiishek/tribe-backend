@@ -58,13 +58,11 @@ app.post('/editstudentDetails',authenticate,
 					pass_out_year:new_pass_out_year,
 					course:new_course,
 					job:new_job,
-					$push:{
-						interests : additional_interests
-					}
+					interests : additional_interests
 				})
 				return res.status(201).json({
 					success: 1,
-					msg: details
+					msg: "Details updated!"
 				});
 			}else{
 				return res.status(203).json({
