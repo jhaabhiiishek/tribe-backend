@@ -62,7 +62,7 @@ const links = require('./routes/links')
 const profile = require('./routes/profile')
 const search = require('./routes/search')
 const tribe_invite= require('./routes/tribe_invite')
-const uploadSingleFile= require('./routes/uploadSingleFile')
+// const uploadSingleFile= require('./routes/uploadSingleFile')
 const fetch_post_by_uid = require('./routes/fetch_post_by_uid')
 const fetch_notifications = require('./routes/fetch_notifications')
 
