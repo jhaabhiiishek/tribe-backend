@@ -92,12 +92,12 @@ app.use(studentDetails)
 app.use(tribe_invite)
 // app.use(uploadSingleFile)
 
-app.use(express.static(path.join(__dirname,'tribe','build')));
+app.use(express.static('tribe','build'));
 app.get('*',(req,res)=>{
     res.sendFile(path.join(__dirname,'tribe','build','index.html'));
 })
 
 
-app.listen(process.env.PORT||PORT, () => {
+app.listen('port',process.env.PORT||PORT, () => {
     console.log(`Server is running on PORT ${PORT}...`)
 })
