@@ -92,7 +92,7 @@ app.use(studentDetails)
 app.use(tribe_invite)
 // app.use(uploadSingleFile)
 
-app.use(express.static('./tribe/build'));
+app.use(express.static(path.join(__dirname,'tribe','build')));
 app.get('*',(req,res)=>{
     res.sendFile(path.join(__dirname,'tribe','build','index.html'));
 })
