@@ -10,7 +10,7 @@ const path=require("path");
 const cookieParser = require('cookie-parser');
 
 app.use(express.json())
-const whitelist = ['http://localhost:3000', 'http://example2.com','*'];
+const whitelist = ['http://localhost:3000', 'http://example2.com','https://main--stellular-monstera-299e0a.netlify.app/'];
 const corsOptions = {
   credentials: true, // This is important.
   origin: (origin, callback) => {
