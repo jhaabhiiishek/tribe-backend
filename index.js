@@ -26,21 +26,23 @@ app.use(express.json())
 
 
 
+
+
 // Cron job:
 const cron = require('node-cron');
-const http = require('http');
-
+const axios = require('axios');
+app.get('/',(req,res)=>{
+    res.send('Test successful');
+})
 // Replace 'YOUR_SERVER_URL' with the actual URL of your server
 const serverUrl = 'https://tribe-backend-sl5g.onrender.com';
 
 // Define the cron schedule (every 10 minutes)
+axios.get(serverUrl).then((response)=>{console.log(response.data)})
 cron.schedule('*/10 * * * *', () => {
-  // Perform a simple HTTP GET request to your server
-  http.get(serverUrl, (res) => {
-    console.log(`Self-ping sent to ${serverUrl}. Status code: ${res.statusCode}`);
-  }).on('error', (err) => {
-    console.error(`Error while sending self-ping: ${err.message}`);
-  });
+    console.log('job running')
+    http.request.
+    axios.get(serverUrl).then((response)=>{console.log(response.data)})
 });
 
 app.use(cors({
