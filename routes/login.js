@@ -92,6 +92,7 @@ app.post('/login',
 				console.log("2")
 				return res.status(200).json({
 					success: 1,
+					user_id,
 					msg: "Logged in successfully"
 				});
 			}
