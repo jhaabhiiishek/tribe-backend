@@ -3,7 +3,12 @@ const tribe = require('../modules/tribe')
 const express = require('express')
 const authenticate = require('../auth/authentication')
 const app = express()
-
+app.get('/',(req,res)=>{
+	res.status(201).json({
+		success:1,
+		msg:"yes"
+	})
+})
 app.post('/createtribepost',authenticate,async(req,res)=>{
 	try{
 		const{
