@@ -6,6 +6,7 @@ const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
 const bodyParser = require("body-parser")
+
 const path=require("path");
 const cookieParser = require('cookie-parser');
 
@@ -22,6 +23,25 @@ app.use(express.json())
 //       callback(new Error('Not allowed by CORS'));
 //   }
 // }
+
+
+
+// Cron job:
+const cron = require('node-cron');
+const http = require('http');
+
+// Replace 'YOUR_SERVER_URL' with the actual URL of your server
+const serverUrl = 'https://tribe-backend-sl5g.onrender.com';
+
+// Define the cron schedule (every 10 minutes)
+cron.schedule('*/10 * * * *', () => {
+  // Perform a simple HTTP GET request to your server
+  http.get(serverUrl, (res) => {
+    console.log(`Self-ping sent to ${serverUrl}. Status code: ${res.statusCode}`);
+  }).on('error', (err) => {
+    console.error(`Error while sending self-ping: ${err.message}`);
+  });
+});
 
 app.use(cors({
     origin:"https://stellular-monstera-299e0a.netlify.app",
