@@ -132,7 +132,7 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 			response_to_invite
 		} = req.body;
 	
-		if(!(user_id&&tribe_invite_id&&response_to_invite)){
+		if(!(user_id&&tribe_invite_id)){
 			return res.status(203).json({
 				success:0,
 				msg:"Enter all the required fields"
