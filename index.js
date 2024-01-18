@@ -41,7 +41,6 @@ const serverUrl = 'https://tribe-backend-sl5g.onrender.com';
 axios.get(serverUrl).then((response)=>{console.log(response.data)})
 cron.schedule('*/10 * * * *', () => {
     console.log('job running')
-    http.request.
     axios.get(serverUrl).then((response)=>{console.log(response.data)})
 });
 
