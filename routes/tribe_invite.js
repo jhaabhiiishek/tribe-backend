@@ -145,31 +145,39 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 
 
 		if(response_to_invite=="true"){
+			console.log()
 			const deleteinvite = await tribeinvite.findOne({
 				_id:tribe_invite_id,
 				receiver:user_id
 			})
-			const invite = await student.findByIdAndUpdate({
-				user_id:user_id
-			},{
-				$push:{
-					tribes:deleteinvite.tribe_id
-				}
-			});
-			const tribeinvite = await tribe.findByIdAndUpdate({
-				tribe_id:deleteinvite.tribe_id
-			},{
-				$push:{
-					members: user_id
-				}
-			})
-	
+			if(deleteinvite){
+				const invite = await student.findByIdAndUpdate({
+					user_id:user_id
+				},{
+					$push:{
+						tribes:deleteinvite.tribe_id
+					}
+				});
+				const tribeinvite = await tribe.findByIdAndUpdate({
+					tribe_id:deleteinvite.tribe_id
+				},{
+					$push:{
+						members: user_id
+					}
+				})
+			}else{
+				return res.status(203).json({
+					success:0,
+					msg:"invite doesn't exist",
+					data:deleteinvite
+				})
+			}
 		}
-		const deleteinvite = await tribeinvite.findOneAndDelete({
+		const deleteinvitequery = await tribeinvite.findOneAndDelete({
 			_id:tribe_invite_id,
 			receiver:user_id
 		})
-		if(deleteinvite!=null||deleteinvite!=undefined){
+		if(deleteinvitequery!=null||deleteinvitequery!=undefined){
 			return res.status(201).json({
 				success:1,
 				msg:"successfull",
@@ -185,7 +193,7 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 	}catch(err){
 		return res.status(203).json({
 			success:0,
-			status:'failed',
+			msg:'failed',
 			data:err
 		})
 	}
