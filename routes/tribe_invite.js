@@ -140,12 +140,9 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 		}
 
 		if(response_to_invite){
-			const tribeinvite = await tribe.findByIdAndUpdate({
-				tribe_id:deleteinvite.tribe_id
-			},{
-				$push:{
-					members: user_id
-				}
+			const deleteinvite = await tribeinvite.findOne({
+				_id:tribe_invite_id,
+				receiver:user_id
 			})
 			const invite = await student.findByIdAndUpdate({
 				user_id:user_id
@@ -154,9 +151,12 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 					tribes:deleteinvite.tribe_id
 				}
 			});
-			const deleteinvite = await tribeinvite.findOne({
-				_id:tribe_invite_id,
-				receiver:user_id
+			const tribeinvite = await tribe.findByIdAndUpdate({
+				tribe_id:deleteinvite.tribe_id
+			},{
+				$push:{
+					members: user_id
+				}
 			})
 	
 		}
