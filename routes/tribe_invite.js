@@ -144,7 +144,7 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 		console.log(response_to_invite)
 
 
-		if(response_to_invite){
+		if(response_to_invite=="true"){
 			const deleteinvite = await tribeinvite.findOne({
 				_id:tribe_invite_id,
 				receiver:user_id
