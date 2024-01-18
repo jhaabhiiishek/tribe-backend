@@ -139,6 +139,11 @@ app.post('/response_tribe_invites',authenticate, async function(req, res, next) 
 			})
 		}
 
+		console.log(user_id)
+		console.log(tribe_invite_id)
+		console.log(response_to_invite)
+
+
 		if(response_to_invite){
 			const deleteinvite = await tribeinvite.findOne({
 				_id:tribe_invite_id,
