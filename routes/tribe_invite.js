@@ -62,6 +62,7 @@ app.post('/tribe_invite',authenticate, async function(req, res, next) {
 		const invite = await tribeinvite.create({
 			sender:user_id,
 			receiver:receiver_id,
+			tribe_name:tribe_fetch.tribe_name,
 			sent_at: new Date(),
 			tribe_id:tribe_id
 		})
