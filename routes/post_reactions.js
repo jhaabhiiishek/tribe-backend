@@ -104,7 +104,7 @@ app.post('/upvote',authenticate, async function(req, res, next) {
 				user_id : posted_by,
 				type:'liked',
 				action_performed_by:user_id,
-				action_on_User_post_id : user_post_id
+				action_on_post_id : user_post_id
 			})
 			return res.status(201).json({
 				success:1,
