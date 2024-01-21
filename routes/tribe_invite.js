@@ -59,26 +59,41 @@ app.post('/tribe_invite',authenticate, async function(req, res, next) {
 			})
 		}
 
-		const invite = await tribeinvite.create({
+		const prevInviteCheck = await tribeinvite.findOne({
 			sender:user_id,
 			receiver:receiver_id,
-			tribe_name:tribe_fetch.tribe_name,
-			sent_at: new Date(),
 			tribe_id:tribe_id
 		})
-		if(invite){
-
-			return res.status(201).json({
-				success:1,
-				msg:"success",
-				data:invite
+		if(prevInviteCheck!=undefined){
+			const prevInviteCheck = await tribeinvite.updateOne({
+				sender:user_id,
+				receiver:receiver_id,
+				tribe_id:tribe_id,
+			},{
+				sent_at: new Date()
 			})
 		}else{
-			return res.status(203).json({
-				success:0,
-				msg:"Can not invite",
-				data:invite
+			const invite = await tribeinvite.create({
+				sender:user_id,
+				receiver:receiver_id,
+				tribe_name:tribe_fetch.tribe_name,
+				sent_at: new Date(),
+				tribe_id:tribe_id
 			})
+			if(invite){
+	
+				return res.status(201).json({
+					success:1,
+					msg:"success",
+					data:invite
+				})
+			}else{
+				return res.status(203).json({
+					success:0,
+					msg:"Can not invite",
+					data:invite
+				})
+			}
 		}
 	}catch(err){
 		return res.status(203).json({

@@ -30,11 +30,9 @@ app.post('/fetch_links',authenticate, async(req,res)=>{
 				data: user_details
 			})
 		}else{
-			res.status(203).json({
-				success:0,
-				data:{
-					user_details
-				}
+			res.status(201).json({
+				success:1,
+				msg:"Student doesn't exist"
 			})
 		}
 	}catch(err){

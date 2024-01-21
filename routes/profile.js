@@ -67,6 +67,45 @@ app.post('/editstudentDetails',authenticate,
 			}else{
 				return res.status(203).json({
 					success: 0,
+					msg: "Your data doesn't exist"
+				});
+			}
+
+		}catch(err){
+			console.log(err);
+			return res.status(203).json({
+				success: 0,
+				msg: err
+			});
+		}
+	}
+);
+app.post('/fetchstudentDetails',authenticate,
+	async function(req, res) {
+		try{
+			const {
+				user_id,
+			} = req.body
+
+			if(!(user_id)){
+				return res.status(203).json({
+					success:0,
+					msg:"User_id is required"
+				})
+			}
+			
+			const studentDetails = await student.findOne({
+				user_id:user_id
+			})
+			if(studentDetails!=null&&studentDetails!=undefined){
+				return res.status(201).json({
+					success: 1,
+					msg: "Details updated!",
+					data:studentDetails
+				});
+			}else{
+				return res.status(203).json({
+					success: 1,
 					msg: "Student details doesnt exist"
 				});
 			}
