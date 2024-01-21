@@ -108,7 +108,8 @@ app.post('/studentDetails',authenticate,
 				})
 				return res.status(201).json({
 					success: 1,
-					msg: details
+					msg: "created successfully",
+					data:details
 				});
 			}else{
 				return res.status(203).json({
