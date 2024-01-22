@@ -60,7 +60,7 @@ app.post('/leave_tribe',authenticate, async function(req, res, next) {
 				members:user_id
 			}
 		})
-		console.log("check check 3")
+		console.log("check check 3 ",tribe_removal)
 		const user_removal = await tribe.findOneAndUpdate({
 			user_id:user_id
 		},{
@@ -68,7 +68,7 @@ app.post('/leave_tribe',authenticate, async function(req, res, next) {
 				tribes:tribe_id
 			}
 		})
-		console.log("check check 4")
+		console.log("check check 4 ",user_removal)
 		if(user_removal&&tribe_removal){
 			console.log("check check 5")
 			return res.status(201).json({
