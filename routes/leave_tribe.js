@@ -26,14 +26,14 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const comment = require('../modules/comment')
 
-app.use(session({
-	secret: process.env.TOKEN_KEY,
-	resave: false,
-	saveUninitialized: false
-}));
-app.use(express.json())
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(session({
+// 	secret: process.env.TOKEN_KEY,
+// 	resave: false,
+// 	saveUninitialized: false
+// }));
+// app.use(express.json())
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 
 
