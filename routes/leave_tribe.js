@@ -61,7 +61,7 @@ app.post('/leave_tribe',authenticate, async function(req, res, next) {
 			}
 		})
 		console.log("check check 3 ",tribe_removal)
-		const user_removal = await tribe.findOneAndUpdate({
+		const user_removal = await student.findOneAndUpdate({
 			user_id:user_id
 		},{
 			$pull:{
