@@ -43,12 +43,8 @@ app.post('/login',
 					console.log(tokens)
 					res.json(tokens);
 				})
-				.catch(error => {
-					// Handle errors in the token exchange
-					console.error('Token exchange error:', error);
-					res.status(500).json({ error: 'Internal Server Error' });
-				});
 				console.log("no error yet")
+				return
 				const result = await login_creds.findOne({
 					
 				})
