@@ -25,26 +25,6 @@ app.post('/login',
 			}
 
 			if(g_pass){
-				const client_id = "128331685413-1rh7e21p5hfq813q7i0j5rs639e8ckpg.apps.googleusercontent.com"
-				const secret = "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"
-				fetch('<https://oauth2.googleapis.com/token>', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded',
-					},
-					body: new URLSearchParams({
-						g_pass,
-						client_id,
-						secret,
-					}),
-				})
-				.then(response => console.log(response.json()))
-				.then(tokens => {
-					console.log(tokens)
-					res.json(tokens);
-				})
-				console.log("no error yet")
-				return
 				const result = await login_creds.findOne({
 					
 				})
