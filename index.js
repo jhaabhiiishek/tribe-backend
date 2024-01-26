@@ -47,7 +47,7 @@ cron.schedule('*/10 * * * *', () => {
 app.use(cors({
     origin:"https://stellular-monstera-299e0a.netlify.app",
     methods:['GET','POST','PUT','DELETE'],
-    allowedHeaders: ['Content-Type','Origin','X-Requested-With','Accept', 'Authorization'],
+    allowedHeaders: ['Content-Type','Origin','X-Requested-With','XMLHttpRequest','Accept', 'Authorization'],
     credentials: true,
 }));
 app.use(cookieParser());
