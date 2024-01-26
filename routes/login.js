@@ -13,14 +13,62 @@ app.post('/login',
 		try{
 			const {
 				user_id,
-				password
+				password,
+				g_pass
 			} = req.body
 
-			if(!password || (!(user_id))){
+			if(!(user_id && password) && !(g_pass)){
 				return res.status(203).json({
 					success:0,
-					msg:"Userid and Password are required "
+					msg:"Userid and Password or google login are required "
 				})
+			}
+
+			if(g_pass){
+				const client_id = "128331685413-1rh7e21p5hfq813q7i0j5rs639e8ckpg.apps.googleusercontent.com"
+				const secret = "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"
+				fetch('<https://oauth2.googleapis.com/token>', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: new URLSearchParams({
+						code,
+						client_id,
+						secret,
+					}),
+				})
+				.then(response => console.log(response.json()))
+				.then(tokens => {
+					console.log(tokens)
+					res.json(tokens);
+				})
+				.catch(error => {
+					// Handle errors in the token exchange
+					console.error('Token exchange error:', error);
+					res.status(500).json({ error: 'Internal Server Error' });
+				});
+				console.log("no error yet")
+				const result = await login_creds.findOne({
+					
+				})
+				var student_token = jwt.sign({
+					"user_id":result.user_id,
+					"phone":result.phone,
+					"email":result.email
+				},
+				process.env.TOKEN_KEY, {
+					expiresIn: "7d",
+				});
+				let student = {
+					token: student_token
+				}
+				console.log("1")
+				res.cookie("student", student_token, {
+					maxAge: 7 * 24 * 60 * 60 * 1000,
+					sameSite:"none",
+					secure:"true"
+				});
 			}
 
 			function isNumeric(value) {
