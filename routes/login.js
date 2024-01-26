@@ -33,7 +33,7 @@ app.post('/login',
 						'Content-Type': 'application/x-www-form-urlencoded',
 					},
 					body: new URLSearchParams({
-						code,
+						g_pass,
 						client_id,
 						secret,
 					}),
