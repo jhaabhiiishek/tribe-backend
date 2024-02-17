@@ -36,7 +36,7 @@ app.post('/login',
 				const payload = ticket.getPayload();
 				const email_id = payload['email'];
 
-				console.log(payload)
+				console.log(email_id)
 				const student_creds = await login_creds.findOne({
 					email:email_id
 				})
