@@ -34,30 +34,40 @@ app.post('/login',
 					audience:client_id
 				})
 				const payload = ticket.getPayload();
-				const userid = payload['sub'];
+				const email_id = payload['email'];
 
 				console.log(payload)
-				return res.status(203).json({
-					success: 0,
-					msg: payload
-				});
-				var student_token = jwt.sign({
-					"user_id":result.user_id,
-					"phone":result.phone,
-					"email":result.email
-				},
-				process.env.TOKEN_KEY, {
-					expiresIn: "7d",
-				});
-				let student = {
-					token: student_token
+				const student_creds = await login_creds.findOne({
+					email:email_id
+				})
+				if(student_creds){
+					var student_token = jwt.sign({
+						"user_id":student_creds.user_id,
+						"phone":result.phone,
+						"email":result.email
+					},
+					process.env.TOKEN_KEY, {
+						expiresIn: "7d",
+					});
+					let student = {
+						token: student_token
+					}
+					res.cookie("student", student_token, {
+						maxAge: 7 * 24 * 60 * 60 * 1000,
+						sameSite:"none",
+						secure:"true"
+					});
+					return res.status(201).json({
+						success: 1,
+						msg: student
+					});
+				}else{
+					return res.status(203).json({
+						success: 0,
+						msg: "Sign Up!"
+					});
 				}
-				console.log("1")
-				res.cookie("student", student_token, {
-					maxAge: 7 * 24 * 60 * 60 * 1000,
-					sameSite:"none",
-					secure:"true"
-				});
+
 			}
 
 			function isNumeric(value) {
