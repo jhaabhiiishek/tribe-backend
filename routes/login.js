@@ -58,7 +58,8 @@ app.post('/login',
 						secure:"true"
 						}).status(200).json({
 							success: 1,
-							msg: student
+							user_id:student_creds.user_id,
+							msg: "login sucessful via Google"
 						});
 				}else{
 					return res.status(203).json({
