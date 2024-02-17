@@ -37,7 +37,10 @@ app.post('/login',
 				const userid = payload['sub'];
 
 				console.log(payload)
-				return
+				return res.status(203).json({
+					success: 0,
+					msg: payload
+				});
 				var student_token = jwt.sign({
 					"user_id":result.user_id,
 					"phone":result.phone,
