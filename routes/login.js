@@ -43,7 +43,7 @@ app.post('/login',
 				if(student_creds){
 					var student_token = jwt.sign({
 						"user_id":student_creds.user_id,
-						"phone":result.phone,
+						"phone":"12345",
 						"email":result.email
 					},
 					process.env.TOKEN_KEY, {
