@@ -52,15 +52,14 @@ app.post('/login',
 					let student = {
 						token: student_token
 					}
-					res.cookie("student", student_token, {
+					return res.cookie("student", student_token, {
 						maxAge: 7 * 24 * 60 * 60 * 1000,
 						sameSite:"none",
 						secure:"true"
-					});
-					return res.status(201).json({
-						success: 1,
-						msg: student
-					});
+						}).status(200).json({
+							success: 1,
+							msg: student
+						});
 				}else{
 					return res.status(203).json({
 						success: 0,
