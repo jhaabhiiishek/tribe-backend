@@ -5,8 +5,10 @@ const app = express()
 const bcrypt = require('bcrypt');
 const passport = require('passport')
 const authenticate = require('../auth/authentication')
-const login_creds = require('../modules/login_creds')
+const login_creds = require('../modules/login_creds');
+const { OAuth2Client } = require("google-auth-library");
 const LocalStrategy = require('passport-local').Strategy;
+const client = new OAuth2Client();
 
 app.post('/login',
 	async function(req, res) {
@@ -25,9 +27,17 @@ app.post('/login',
 			}
 
 			if(g_pass){
-				const result = await login_creds.findOne({
-					
+				const credential = g_pass.credential;
+				const client_id = g_pass.client_id;
+				const ticket = await client.verifyIdToken({
+					idToken:credential,
+					audience:client_id
 				})
+				const payload = ticket.getPayload();
+				const userid = payload['sub'];
+
+				console.log(payload)
+				return
 				var student_token = jwt.sign({
 					"user_id":result.user_id,
 					"phone":result.phone,
@@ -70,6 +80,7 @@ app.post('/login',
 			if(student!=null){
 				result = student
 			}
+			
 			if(user!=null){
 				result = user
 			}
