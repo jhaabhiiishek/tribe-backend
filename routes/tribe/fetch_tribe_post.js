@@ -1,11 +1,11 @@
 // find all posts of a tribe in last 3 days
 
-const post = require('../modules/post')
-const student = require('../modules/student')
-const tribe = require('../modules/tribe')
+const post = require('../../modules/post')
+const student = require('../../modules/student')
+const tribe = require('../../modules/tribe')
 const express = require('express')
 const app = express()
-const authenticate = require('../auth/authentication')
+const authenticate = require('../../auth/authentication')
 
 app.post('/fetch_tribe_post',authenticate, async(req,res) => {
 	const {user_id,tribe_id} = req.body

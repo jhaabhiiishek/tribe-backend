@@ -1,6 +1,6 @@
-const post = require('../modules/post')
+const post = require('../../modules/post.js')
 const express = require('express')
-const authenticate = require('../auth/authentication')
+const authenticate = require('../../auth/authentication')
 const app = express()
 
 app.post('/createpost',authenticate,async(req,res)=>{

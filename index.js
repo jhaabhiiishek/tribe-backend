@@ -26,6 +26,10 @@ app.use(express.json())
 
 
 
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+
 
 
 // Cron job:
@@ -65,34 +69,31 @@ mongoose.connect(DB, {
     console.log('Database connected..')
 })
 
-
-const login_creds = require('./modules/login_creds')
-const comments = require('./modules/comment')
-const createpost = require('./routes/create_post')
-const fetch_links = require('./routes/fetch_links')
-const postreaction = require('./routes/post_reactions')
-const login = require('./routes/login')
-const logout = require('./routes/logout')
-const changepassword = require('./routes/change_password')
-const delete_post = require('./routes/delete_post')
-const delete_tribe_post = require('./routes/delete_tribe_post')
-const email_otp = require('./routes/email_otp')
-const fetch_tribe_post = require('./routes/fetch_tribe_post')
-const fetch_tribe_users = require('./routes/fetch_tribe_users')
-const fetch_tribes= require('./routes/fetch_tribes')
-const createtribe = require('./routes/create_tribe')
-const createtribepost = require('./routes/create_tribe_post')
-const leave_tribe = require('./routes/leave_tribe')
-const signup = require('./routes/signup')
-const studentDetails = require('./routes/student_details')
-const fetch_user_post = require('./routes/fetch_user_post')
-const links = require('./routes/links')
-const profile = require('./routes/profile')
-const search = require('./routes/search')
-const tribe_invite= require('./routes/tribe_invite')
-// const uploadSingleFile= require('./routes/uploadSingleFile')
-const fetch_post_by_uid = require('./routes/fetch_post_by_uid')
-const fetch_notifications = require('./routes/fetch_notifications')
+const createpost = require('./routes/user/create_post')
+const fetch_links = require('./routes/user/fetch_links')
+const postreaction = require('./routes/user/post_reactions')
+const login = require('./routes/user/login')
+const logout = require('./routes/user/logout')
+const changepassword = require('./routes/user/change_password')
+const delete_post = require('./routes/user/delete_post')
+const delete_tribe_post = require('./routes/tribe/delete_tribe_post')
+const email_otp = require('./routes/user/email_otp')
+const fetch_tribe_post = require('./routes/tribe/fetch_tribe_post')
+const fetch_tribe_users = require('./routes/tribe/fetch_tribe_users')
+const fetch_tribes= require('./routes/user/fetch_tribes')
+const createtribe = require('./routes/tribe/create_tribe')
+const createtribepost = require('./routes/tribe/create_tribe_post')
+const leave_tribe = require('./routes/tribe/leave_tribe')
+const signup = require('./routes/user/signup')
+const studentDetails = require('./routes/user/student_details')
+const fetch_user_post = require('./routes/user/fetch_user_post')
+const links = require('./routes/user/links')
+const profile = require('./routes/user/profile')
+const search = require('./routes/user/search')
+const tribe_invite= require('./routes/tribe/tribe_invite')
+// const uploadSingleFileAWS= require('./routes/user/uploadSingleFileAWS')
+const fetch_post_by_uid = require('./routes/user/fetch_post_by_uid')
+const fetch_notifications = require('./routes/user/fetch_notifications')
 
 app.use(changepassword)
 app.use(createpost)
@@ -118,7 +119,30 @@ app.use(search)
 app.use(signup)
 app.use(studentDetails)
 app.use(tribe_invite)
-// app.use(uploadSingleFile)
+// app.use(uploadSingleFileAWS)
+
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+        title: 'Movie Booking Backend',
+        description: 'Movie booking Backend Documentation',
+        contact: {
+            name: "Abhishek",
+        },
+        servers: [`http://localhost:${PORT}`]
+        }
+    },
+    apis: ["index.js"]
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+//Swagger definition
+
+
+
 
 
 app.listen(process.env.PORT||PORT, () => {

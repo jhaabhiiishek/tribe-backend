@@ -1,9 +1,9 @@
 // Will take a bit of strategizing as per the tribe module
 require('dotenv').config()
 const { use } = require('passport')
-const authenticate = require('../auth/authentication')
-const student = require('../modules/student')
-const tribe = require('../modules/tribe')
+const authenticate = require('../../auth/authentication')
+const student = require('../../modules/student')
+const tribe = require('../../modules/tribe')
 const express = require('express')
 const app = express()
 

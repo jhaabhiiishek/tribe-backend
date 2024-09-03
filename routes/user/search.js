@@ -5,16 +5,16 @@
 
 require("dotenv").config();
 
-const post = require('../modules/post')
+const post = require('../../modules/post')
 const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt');
 const passport = require('passport')
-const authenticate = require('../auth/authentication')
-const login_creds = require('../modules/login_creds')
+const authenticate = require('../../auth/authentication')
+const login_creds = require('../../modules/login_creds')
 const LocalStrategy = require('passport-local').Strategy;
 const jwt = require("jsonwebtoken");
-const student = require('../modules/student');
+const student = require('../../modules/student');
 const bodyParser = require("body-parser")
 
 

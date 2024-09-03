@@ -3,21 +3,21 @@
 //Part of profile section in the final website
 require('dotenv').config()
 
-const post = require('../modules/post')
+const post = require('../../modules/post')
 const express = require('express')
 const app = express()
-const student = require('../modules/student')
+const student = require('../../modules/student')
 const bcrypt = require('bcrypt');
 const passport = require('passport')
-const authenticate = require('../auth/authentication')
+const authenticate = require('../../auth/authentication')
 const mongoose = require('mongoose')
-const login_creds = require('../modules/login_creds')
-const link = require('../modules/pendinglinks')
+const login_creds = require('../../modules/login_creds')
+const link = require('../../modules/pendinglinks')
 
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-const comment = require('../modules/comment')
-const notifications = require('../modules/notifications')
+const comment = require('../../modules/comment')
+const notifications = require('../../modules/notifications')
 
 app.use(session({
 	secret: process.env.TOKEN_KEY, // the secret used to sign the session ID cookie

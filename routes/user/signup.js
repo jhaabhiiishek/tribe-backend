@@ -1,15 +1,15 @@
-const post = require('../modules/post')
+const post = require('../../modules/post')
 const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt');
 const passport = require('passport')
-const authenticate = require('../auth/authentication')
+const authenticate = require('../../auth/authentication')
 const mongoose = require('mongoose')
-const login_creds = require('../modules/login_creds')
+const login_creds = require('../../modules/login_creds')
 
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-const otp = require('../modules/otp');
+const otp = require('../../modules/otp');
 
 app.use(session({
 	secret: 'my-secret-key', // the secret used to sign the session ID cookie

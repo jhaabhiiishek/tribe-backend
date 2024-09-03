@@ -1,8 +1,8 @@
-const post = require('../modules/post')
-const student = require('../modules/student')
+const post = require('../../modules/post')
+const student = require('../../modules/student')
 const express = require('express')
 const app = express()
-const authenticate = require('../auth/authentication')
+const authenticate = require('../../auth/authentication')
 
 app.post('/fetch_post_by_user',authenticate, async(req,res) => {
 	const {user_id,accToBeSearched} = req.body

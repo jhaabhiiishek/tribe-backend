@@ -1,4 +1,4 @@
-const post = require('../modules/post')
+const post = require('../../modules/post')
 const express = require('express')
 const app = express()
 const passport = require('passport')

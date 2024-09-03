@@ -3,8 +3,8 @@ const express = require('express')
 const app = express();
 const bodyParser = require('body-parser');
 const nodemailer= require('nodemailer');
-const login_creds = require('../modules/login_creds')
-const otp_mod = require('../modules/otp')
+const login_creds = require('../../modules/login_creds')
+const otp_mod = require('../../modules/otp')
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
 // app.use(bodyParser.raw());

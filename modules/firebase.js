@@ -1,7 +1,16 @@
-// Import the functions you need from the SDKs you need
-import { getStorage } from "firebase/storage";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+const { initializeApp } =require("firebase/app");
+const { getStorage } =require("firebase/storage");
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDghvHV7wJfe9BB9-ocK6IDulZIGRlYBh4",
+  authDomain: "tribe-main-proj.firebaseapp.com",
+  projectId: "tribe-main-proj",
+  storageBucket: "tribe-main-proj.appspot.com",
+  messagingSenderId: "533647502304",
+  appId: "1:533647502304:web:9ca45b8b4fc5fca83e9985",
+  measurementId: "G-Z2LLK5DLL1"
+};
+
+const app = initializeApp(firebaseConfig);
+
+module.exports = getStorage(app)

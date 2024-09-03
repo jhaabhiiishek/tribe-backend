@@ -1,14 +1,14 @@
 require('dotenv').config()
 
-const post = require('../modules/post')
-const otp_mod = require('../modules/otp')
+const post = require('../../modules/post')
+const otp_mod = require('../../modules/otp')
 const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt');
 const passport = require('passport')
-const authenticate = require('../auth/authentication')
+const authenticate = require('../../auth/authentication')
 const mongoose = require('mongoose')
-const login_creds = require('../modules/login_creds')
+const login_creds = require('../../modules/login_creds')
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 

@@ -1,7 +1,7 @@
-const post = require('../modules/post')
-const tribe = require('../modules/tribe')
+const post = require('../../modules/post')
+const tribe = require('../../modules/tribe')
 const express = require('express')
-const authenticate = require('../auth/authentication')
+const authenticate = require('../../auth/authentication')
 const app = express()
 app.get('/',(req,res)=>{
 	res.status(201).json({

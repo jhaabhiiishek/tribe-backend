@@ -3,22 +3,22 @@
 
 require('dotenv').config()
 
-const post = require('../modules/post')
+const post = require('../../modules/post')
 const express = require('express')
-const tribe = require('../modules/tribe')
+const tribe = require('../../modules/tribe')
 const app = express()
-const student = require('../modules/student')
+const student = require('../../modules/student')
 const bcrypt = require('bcrypt');
 const passport = require('passport')
-const authenticate = require('../auth/authentication')
+const authenticate = require('../../auth/authentication')
 const mongoose = require('mongoose')
-const tribeinvite = require('../modules/tribe_invite_module')
-const login_creds = require('../modules/login_creds')
-const link = require('../modules/pendinglinks')
+const tribeinvite = require('../../modules/tribe_invite_module')
+const login_creds = require('../../modules/login_creds')
+const link = require('../../modules/pendinglinks')
 
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-const comment = require('../modules/comment')
+const comment = require('../../modules/comment')
 
 app.use(session({
 	secret: process.env.TOKEN_KEY,

@@ -1,9 +1,9 @@
 const { use } = require('passport')
-const authenticate = require('../auth/authentication')
+const authenticate = require('../../auth/authentication')
 
-const project = require('../modules/project')
-const student = require('../modules/student')
-const tribe = require('../modules/tribe')
+const project = require('../../modules/project')
+const student = require('../../modules/student')
+const tribe = require('../../modules/tribe')
 
 const express = require('express')
 const app = express()
