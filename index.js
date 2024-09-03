@@ -49,7 +49,7 @@ cron.schedule('*/10 * * * *', () => {
 });
 
 app.use(cors({
-    origin:"https://tribein.netlify.app",
+    origin:"https://tribein.netlify.app"||"https://localhost:3000",
     methods:['GET','POST','PUT','DELETE'],
     allowedHeaders: ['Content-Type','Origin','X-Requested-With','XMLHttpRequest','Accept', 'Authorization'],
     credentials: true,
