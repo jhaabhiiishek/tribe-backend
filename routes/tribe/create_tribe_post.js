@@ -14,7 +14,8 @@ app.post('/createtribepost',authenticate,async(req,res)=>{
 		const{
 			user_id,
 			tribe_id,
-			text 
+			text,
+			media_link
 		} = req.body
 
 		if(!(user_id&&tribe_id)){
@@ -64,7 +65,7 @@ app.post('/createtribepost',authenticate,async(req,res)=>{
 			tags:tags,
 			is_tribe:true,
 			text:text ,
-			// media_link:media_link,
+			media_link:media_link,
 			upload_date:new Date()
 		})
 
