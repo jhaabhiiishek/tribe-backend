@@ -6,8 +6,8 @@ const app = express()
 app.post('/createpost',authenticate,async(req,res)=>{
 	const{
 		user_id,
-		text
-		// media_link,
+		text,
+		media_link,
 	} = req.body
 
 		if(!(user_id&&text)){
@@ -50,7 +50,7 @@ app.post('/createpost',authenticate,async(req,res)=>{
 			tags:tags,
 			is_tribe:false,
 			text:text ,
-			// media_link:media_link,
+			media_link:media_link,
 			upload_date:new Date()
 		})
 		console.log(details)

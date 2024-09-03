@@ -140,6 +140,63 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 //Swagger definition
+/**
+ * @swagger
+ * /login:
+ *  post:
+ *    tags:
+ *      - Authentication
+ *    summary: Login for all users
+ *    parameters:
+ *      - in: body
+ *        name: body
+ *        description: Login user
+ *        required: true
+ *        example: {"user_id":"user@gmail.com","password":"123456"}
+ *    responses:
+ *      '200':
+ *        description: Success
+ *      '203':
+ *        description: failure
+ */
+
+/**
+ * @swagger
+ * /logout:
+ *  get:
+ *    tags:
+ *      - Authentication
+ *    summary: Logout user
+ *    responses:
+ *      '200':
+ *        description: Success
+ *      '203':
+ *        description: failure
+ */
+
+/**
+ * @swagger
+ * /uploadSingleFile:
+ *  post:
+ *    tags:
+ *      - File
+ *    summary: Add movie to the database
+ *    parameters:
+ *      - in: formData
+ *        name: user_id
+ *        description: "Give your userId"
+ *        required: true
+ *      - in: formData
+ *        name: file
+ *        description: File
+ *        required: true
+ *        type: file
+ *    responses:
+ *      '200':
+ *        description: Success
+ *      '203':
+ *        description: failure
+ */
 
 
 
