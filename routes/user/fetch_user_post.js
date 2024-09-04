@@ -27,6 +27,7 @@ app.post('/fetch_user_post',authenticate, async(req,res) => {
 				is_tribe:false,
 				// upload_date: {$gte: new Date((new Date().getTime() - (3 * 24 * 60 * 60 * 1000)))}
 			}).sort({ $natural: -1 })
+			console.log(item)
 			post_response.push(item)
 		}
 		console.log(post_response)
