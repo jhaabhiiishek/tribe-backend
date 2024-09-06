@@ -93,8 +93,7 @@ app.post('/search',authenticate,
 			}).limit(noOfValues)
 			let filteredResult = studentDetails.filter((entry) => entry.user_id !== user_id);
 
-			
-			if(filteredResult!=null){
+			if(filteredResult!=null && filteredResult.length>0){
 				return res.status(201).json({
 					success: 1,
 					msg:"success",
@@ -105,18 +104,17 @@ app.post('/search',authenticate,
 					$or: [
 						{ name: { $regex: key } },
 						{ email: { $regex: key } },
-						{ dob: { $regex: key } },
 						{ job: { $regex: key } },
 						{ course: { $regex: key } },
-						{ pass_out_year: { $regex: key } },
 						{ college: { $regex: key } },
 						{ home_city: { $regex: key} },
 						{ about: { $regex: key} },
-						{ interests: { $regex: key} }
+						{ interests: {  $regex: new RegExp(key, "i") } }
 					]
 				})
 				if(results){
 					let filtered = results.filter((entry) => entry.user_id !== user_id);
+					console.log(filtered)
 					return res.status(201).json({
 						success: 1,
 						msg:"success",
