@@ -93,8 +93,7 @@ app.post('/search',authenticate,
 			}).limit(noOfValues)
 			let filteredResult = studentDetails.filter((entry) => entry.user_id !== user_id);
 
-			console.log(filteredResult)
-			console.log(studentDetails)
+			
 			if(filteredResult!=null){
 				return res.status(201).json({
 					success: 1,
@@ -102,6 +101,28 @@ app.post('/search',authenticate,
 					data: filteredResult
 				});
 			}else{
+				const results = await student.find({
+					$or: [
+						{ name: { $regex: key } },
+						{ email: { $regex: key } },
+						{ dob: { $regex: key } },
+						{ job: { $regex: key } },
+						{ course: { $regex: key } },
+						{ pass_out_year: { $regex: key } },
+						{ college: { $regex: key } },
+						{ home_city: { $regex: key} },
+						{ about: { $regex: key} },
+						{ interests: { $regex: key} }
+					]
+				})
+				if(results){
+					let filtered = results.filter((entry) => entry.user_id !== user_id);
+					return res.status(201).json({
+						success: 1,
+						msg:"success",
+						data: filtered
+					})
+				}
 				return res.status(203).json({
 					success: 0,
 					msg: "Can't find student with given details"
