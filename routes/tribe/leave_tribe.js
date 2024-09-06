@@ -45,14 +45,12 @@ app.post('/leave_tribe',authenticate, async function(req, res, next) {
 			tribe_id
 		} = req.body;
 	
-		console.log("check check 1")
 		if(!(user_id&&tribe_id)){
 			return res.status(203).json({
 				success:0,
 				msg:"Enter all the required fields"
 			})
 		}
-		console.log("check check 2")
 		const tribe_removal = await tribe.findOneAndUpdate({
 			tribe_id:tribe_id
 		},{
@@ -60,7 +58,6 @@ app.post('/leave_tribe',authenticate, async function(req, res, next) {
 				members:user_id
 			}
 		})
-		console.log("check check 3 ",tribe_removal)
 		const user_removal = await student.findOneAndUpdate({
 			user_id:user_id
 		},{

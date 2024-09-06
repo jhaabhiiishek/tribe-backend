@@ -147,7 +147,6 @@ app.post('/fetch_tribes',authenticate, async function(req, res, next) {
 		console.log(user_tribe)
 		
 		var tribes_data = []
-		console.log('here')
 		if(user_tribe &&(user_tribe.tribes.length>0)){
 			for(let i = 0;i<user_tribe.tribes.length;i++){
 				const tribe_data = await tribe.findOne({

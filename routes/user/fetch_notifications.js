@@ -11,7 +11,7 @@ const app = express()
 app.post('/fetch_notifications',authenticate, async(req,res)=>{
 	try{
 		const {
-			user_id
+			user_id,
 		}=req.body;
 		if(!(user_id)){
 			return res.status(203).json({
@@ -21,9 +21,19 @@ app.post('/fetch_notifications',authenticate, async(req,res)=>{
 		}
 		
 		
-		const user_details = await notifications.findOne({
+		const user_details = await notifications.find({
 			user_id:user_id
 		})
+		var arr = []
+		for(var i=0;i<user_details.length;i++){
+			var obj = {
+				user_id:user_details[i].user_id,
+				type:user_details[i].type,
+				action_performed_by:user_details[i].action_performed_by,
+				action_on_post_id:user_details[i].action_on_post_id
+			}
+			arr.push(obj)
+		}
 		return res.status(201).json({
 			success:1,
 			data: user_details

@@ -110,6 +110,28 @@ app.post('/acceptlinkrequest',authenticate, async function(req, res, next) {
 			})
 		}
 
+		const prevLink = await link.findOne({
+			sender_user_id:sender_user_id,
+			receiver_user_id:user_id
+		})
+		if(prevLink==undefined||prevLink==null){
+			return res.status(203).json({
+				success:0,
+				msg:"No link request found"
+			})
+		}
+
+		const prevLinks = await student.findOne({
+			user_id:user_id,
+			links: {$elemMatch:sender_user_id}
+		})
+
+		if(prevLinks==undefined||prevLinks==null){
+			return res.status(203).json({
+				success:0,
+				msg:"Already linked"
+			})
+		}
 		const receiver_student = await student.updateOne({
 			user_id:user_id
 		},{
@@ -162,6 +184,17 @@ app.post('/rejectlinkrequest',authenticate, async function(req, res, next) {
 			})
 		}
 	
+		const prevLink = await link.findOne({
+			sender_user_id:sender_user_id,
+			receiver_user_id:user_id
+		})
+		if(prevLink==undefined||prevLink==null){
+			return res.status(203).json({
+				success:0,
+				msg:"No link request found"
+			})
+		}
+
 		const link_req = await link.deleteOne({
 			sender_user_id:sender_user_id,
 			receiver_user_id:user_id
