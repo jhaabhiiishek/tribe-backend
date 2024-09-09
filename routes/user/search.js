@@ -136,7 +136,7 @@ app.post('/search',authenticate,
 					{ user_id: { $regex: key } },
 				]
 			}).limit(noOfValues)
-			if(users){
+			if(users.length>0){
 				return res.status(201).json({
 					success: 1,
 					msg:"success",
