@@ -29,20 +29,18 @@ app.post('/fetch_tribe_post',authenticate, async(req,res) => {
 		})
 	}
 
+	let postsrev=tribe_requested.posts.reverse()
 	let l=tribe_requested.posts.length;
 	let post_response=[]
 
 	try{
 		for(var i =0;i<l;i++){
-			console.log(tribe_requested.posts[i]._id)
 			const postThis = await post.findOne({
-				_id:tribe_requested.posts[i]._id
+				_id:postsrev[i]._id
 				// is_tribe:true
-			}).sort({ $natural: -1 })
-			console.log(postThis)
+			})
 			post_response.push(postThis)
 		}
-		console.log("sending",post_response)
         res.status(201).json({
             success:1,
             data : post_response
