@@ -6,6 +6,7 @@
 require("dotenv").config();
 
 const post = require('../../modules/post')
+const tribe = require('../../modules/tribe')
 const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt');
@@ -21,7 +22,7 @@ const bodyParser = require("body-parser")
 const TOKEN_KEY = process.env.TOKEN_KEY;
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/find/',authenticate,
+app.post('/find',authenticate,
 	async function(req, res) {
 		try{
 			const {
@@ -70,7 +71,7 @@ app.post('/find/',authenticate,
 	}
 );
 
-app.post('/search',authenticate,
+app.post('/search_user_id',authenticate,
 	async function(req, res) {
 		try{
 			const {
@@ -93,40 +94,301 @@ app.post('/search',authenticate,
 			}).limit(noOfValues)
 			let filteredResult = studentDetails.filter((entry) => entry.user_id !== user_id);
 
-			if(filteredResult!=null && filteredResult.length>0){
+			if(filteredResult!=null){
 				return res.status(201).json({
 					success: 1,
 					msg:"success",
 					data: filteredResult
 				});
 			}else{
-				const results = await student.find({
-					$or: [
-						{ name: { $regex: key } },
-						{ email: { $regex: key } },
-						{ job: { $regex: key } },
-						{ course: { $regex: key } },
-						{ college: { $regex: key } },
-						{ home_city: { $regex: key} },
-						{ about: { $regex: key} },
-						{ interests: {  $regex: new RegExp(key, "i") } }
-					]
-				})
-				if(results){
-					let filtered = results.filter((entry) => entry.user_id !== user_id);
-					console.log(filtered)
-					return res.status(201).json({
-						success: 1,
-						msg:"success",
-						data: filtered
-					})
-				}
 				return res.status(203).json({
 					success: 0,
 					msg: "Can't find student with given details"
 				});
 			}
 
+		}catch(err){
+			console.log(err);
+			return res.status(203).json({
+				success: 0,
+				msg: err
+			});
+		}
+	}
+);
+app.post('/search',authenticate,
+	async function(req, res) {
+		try{
+			const {
+				user_id,
+				key,
+				noOfValues
+			} = req.body
+
+			if(!(user_id)){
+				return res.status(203).json({
+					success:0,
+					msg:"User_id is required"
+				})
+			}
+			const users = await student.find({
+				$or: [
+					{ user_id: { $regex: key } },
+				]
+			}).filter(noOfValues)
+			if(users){
+				return res.status(201).json({
+					success: 1,
+					msg:"success",
+					data: users
+				})
+			}
+			
+			const results = await student.find({
+				$or: [
+					{ name: { $regex: key } },
+					{ email: { $regex: key } },
+					{ job: { $regex: key } },
+					{ course: { $regex: key } },
+					{ college: { $regex: key } },
+					{ home_city: { $regex: key} },
+					{ about: { $regex: key} },
+					{ interests: {  $regex: new RegExp(key, "i") } }
+				]
+			}).filter(noOfValues)
+			if(results){
+				let filtered = results.filter((entry) => entry.user_id !== user_id);
+				console.log(filtered)
+				return res.status(201).json({
+					success: 1,
+					msg:"success",
+					data: filtered
+				})
+			}
+			return res.status(203).json({
+				success: 0,
+				msg: "Can't find student with given details"
+			});
+		}catch(err){
+			console.log(err);
+			return res.status(203).json({
+				success: 0,
+				msg: err
+			});
+		}
+	}
+);
+
+
+app.post('/search_val',authenticate,
+	async function(req, res) {
+		try{
+			const {
+				user_id,
+				key,
+				noOfValues
+			} = req.body
+
+			if(!(user_id)){
+				return res.status(203).json({
+					success:0,
+					msg:"User_id is required"
+				})
+			}
+			
+			const results = await student.find({
+				$or: [
+					{ name: { $regex: key } },
+					{ email: { $regex: key } },
+					{ job: { $regex: key } },
+					{ course: { $regex: key } },
+					{ college: { $regex: key } },
+					{ home_city: { $regex: key} },
+					{ about: { $regex: key} },
+					{ interests: {  $regex: new RegExp(key, "i") } }
+				]
+			}).filter(noOfValues)
+			if(results){
+				let filtered = results.filter((entry) => entry.user_id !== user_id);
+				console.log(filtered)
+				return res.status(201).json({
+					success: 1,
+					msg:"success",
+					data: filtered
+				})
+			}
+			return res.status(203).json({
+				success: 0,
+				msg: "Can't find student with given details"
+			});
+		}catch(err){
+			console.log(err);
+			return res.status(203).json({
+				success: 0,
+				msg: err
+			});
+		}
+	}
+);
+
+app.post('/search_val_by_type',authenticate,
+	async function(req, res) {
+		try{
+			const {
+				user_id,
+				key,
+				type,
+				noOfValues
+			} = req.body
+
+			if(!(user_id)){
+				return res.status(203).json({
+					success:0,
+					msg:"User_id is required"
+				})
+			}
+			let results
+			switch(type){
+				case "name":
+					results = await student.find({
+						$or: [
+							{ name: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				case "email":
+					results = await student.find({
+						$or: [
+							{ email: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				case "job":
+					results = await student.find({
+						$or: [
+							{ job: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				case "course":
+					results = await student.find({
+						$or: [
+							{ course: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				case "college":
+					results = await student.find({
+						$or: [
+							{ college: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				case "home_city":
+					results = await student.find({
+						$or: [
+							{ home_city: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				case "about":
+					results = await student.find({
+						$or: [
+							{ about: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				case "interests":
+					results = await student.find({
+						$or: [
+							{ interests: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				case "tribe":
+					results = await tribe.find({
+						$or: [
+							{ name: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;	
+				case "tribe_type":
+					results = await tribe.find({
+						$or: [
+							{ tribe_type: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;	
+			}
+			if(results){
+				let filtered = results.filter((entry) => entry.user_id !== user_id);
+				console.log(filtered)
+				return res.status(201).json({
+					success: 1,
+					msg:"success",
+					data: filtered
+				})
+			}
+			return res.status(203).json({
+				success: 0,
+				msg: "Can't find student with given details"
+			});
+		}catch(err){
+			console.log(err);
+			return res.status(203).json({
+				success: 0,
+				msg: err
+			});
+		}
+	}
+);
+app.post('/search_post_by_type',authenticate,
+	async function(req, res) {
+		try{
+			const {
+				user_id,
+				key,
+				type,
+				noOfValues
+			} = req.body
+
+			if(!(user_id)){
+				return res.status(203).json({
+					success:0,
+					msg:"User_id is required"
+				})
+			}
+			let results
+			switch(type){
+				case "name":
+					results = await post.find({
+						$or: [
+							{ tags: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				case "text":
+					results = await post.find({
+						$or: [
+							{ text: { $regex: key } },
+						]
+					}).filter(noOfValues)
+					break;
+				
+			}
+			if(results){
+				let filtered = results.filter((entry) => entry.user_id !== user_id);
+				console.log(filtered)
+				return res.status(201).json({
+					success: 1,
+					msg:"success",
+					data: filtered
+				})
+			}
+			return res.status(203).json({
+				success: 0,
+				msg: "Can't find student with given details"
+			});
 		}catch(err){
 			console.log(err);
 			return res.status(203).json({
