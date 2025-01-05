@@ -27,4 +27,4 @@ Installations and instructions:
 <br>
 After downloading and unzipping the entire repo, make sure to run `npm install` or `npm i`command once
 <br>
-Uploaded docs and working are available on link: https://tribe-backend-sl5g.onrender.com
+Uploaded docs and working are available on link: https://tribe-backend-sl5g.onrender.com/api-docs
