@@ -931,7 +931,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *    parameters:
  *      - in: body
  *        name: body
- *        description: Find by value by type: name, email, job, course, college, home_city, about, interests, tribe, tribe_type
+ *        description: Find by value by type- name, email, job, course, college, home_city, about, interests, tribe, tribe_type
  *        required: true
  *        example: {"user_id":"username","key":"uni","type":"name","noOfValues":"10"}
  *    responses:
@@ -950,7 +950,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *    parameters:
  *      - in: body
  *        name: body
- *        description: Find by value by type: name, text
+ *        description: Find by value by type - name, text
  *        required: true
  *        example: {"user_id":"username","key":"uni","type":"name","noOfValues":"10"}
  *    responses:
