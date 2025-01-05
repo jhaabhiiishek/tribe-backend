@@ -39,8 +39,8 @@ app.get('/',(req,res)=>{
     res.send('Test successful');
 })
 // Replace 'YOUR_SERVER_URL' with the actual URL of your server
-// const serverUrl = 'https://tribe-backend-sl5g.onrender.com';
-const serverUrl = 'http://localhost:8080/';
+const serverUrl = 'https://tribe-backend-sl5g.onrender.com';
+// const serverUrl = 'http://localhost:8080/';
 
 // Define the cron schedule (every 10 minutes)
 axios.get(serverUrl).then((response)=>{console.log(response.data)})
@@ -50,8 +50,8 @@ cron.schedule('*/10 * * * *', () => {
 });
 
 app.use(cors({
-    // origin:"https://tribein.netlify.app",
-    origin:"http://localhost:3000",
+    origin:"https://tribein.netlify.app",
+    // origin:"http://localhost:3000",
     methods:['GET','POST','PUT','DELETE'],
     allowedHeaders: ['Content-Type','Origin','X-Requested-With','XMLHttpRequest','Accept', 'Authorization'],
     credentials: true,
