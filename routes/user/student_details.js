@@ -104,7 +104,8 @@ app.post('/studentDetails',authenticate,
 					job:job,
 					interests:interests,
 					phone:verified_phone,
-					email:verified_email
+					email:verified_email,
+					isPremium:false
 				})
 				return res.status(201).json({
 					success: 1,

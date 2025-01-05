@@ -55,6 +55,10 @@ const studentSchema = new mongoose.Schema({
 	tribes :{
 		type : Array,
 		required : false
+	},
+	isPremium:{
+		type: Boolean,
+		required : true
 	}
 })
 
