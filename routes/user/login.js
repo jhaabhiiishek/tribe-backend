@@ -64,7 +64,7 @@ app.post('/login',
 				}else{
 					return res.status(203).json({
 						success: 0,
-						msg: "Sign Up!"
+						msg: "No account exists. Sign Up instead!"
 					});
 				}
 
