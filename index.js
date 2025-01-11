@@ -800,7 +800,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *        name: body
  *        description: Edit your student details
  *        required: true
- *        example: {"user_id":"username"}
+ *        example: {"user_id":"username","new_about":"add details about you","dob":"2021-06-01","new_home_city":"city","new_college":"college","new_pass_out_year":"2021","new_course":"course","new_job":"job","additional_interests":"interests"}
  *    responses:
  *      '200':
  *        description: Success
